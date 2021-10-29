@@ -1,8 +1,18 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 
+/*
+  ******************** HEEEY!! LOOK HERE!! ********************
+  BEFORE YOU START:
+    1. Are you on your own branch on git? Current branch should
+        NOT be "main"
+    2. Keep things looking neat and uniform
+    3. I may put more stuff here so check back after pull
+  */
+
 Window {
 
+    // These are configuration items for this window.
     property int strt_height: 480
     property int strt_width: 640
     property int padding: 10
@@ -21,11 +31,14 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
+    // This makes it so mainWindow.width and mainWindow.height (just above)
+    // can be referenced by these names in any qml
     property alias w_width: mainWindow.width
     property alias w_height: mainWindow.height
 
     Rectangle
     {
+        // this is the login screen.
         id: canvas
         x: padding
         y: padding
@@ -34,11 +47,13 @@ Window {
         color: bg_color
         Grid
         {
+            // breaks the inner window in half
             id: canvasGrid
             rows: 1
             columns: 2
             Rectangle
             {
+                // left side with some text
                 height: canvas.height
                 width: canvas.width/canvasGrid.columns
                 color: "transparent"
@@ -59,6 +74,7 @@ Window {
 
             Rectangle
             {
+                //right side has all the input boxes, buttons and links
                 id: canvas_1
                 color: "transparent"
                 height: canvas.height
