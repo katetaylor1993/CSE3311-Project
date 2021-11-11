@@ -25,6 +25,7 @@ void LoginWin::on_pushButton_clicked()
         //pass back to parent info needed to log in
         // TODO: This should pass back the id of the user that is logging in instead of 1
         this->done(1);
+        // this is a test comment!
     }
     else
     {
