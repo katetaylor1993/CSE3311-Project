@@ -20,6 +20,7 @@ MainWin::MainWin(QWidget *parent)
         // since this is the top-level window, closing it will cause
         // app to quit
         this->close();
+        //here's an extra test comment
     }
 }
 
