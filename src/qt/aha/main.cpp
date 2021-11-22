@@ -1,4 +1,5 @@
 #include "mainwin.h"
+#include "loginwin.h"
 #include "databasehandler.h"
 
 #include <QApplication>
