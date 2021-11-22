@@ -11,14 +11,22 @@ CONFIG += c++11
 
 SOURCES += \
     databasehandler.cpp \
+    filters.cpp \
+    login.cpp \
     loginwin.cpp \
     main.cpp \
-    mainwin.cpp
+    mainwin.cpp \
+    record.cpp \
+    user.cpp
 
 HEADERS += \
     databasehandler.h \
+    filters.h \
+    login.h \
     loginwin.h \
-    mainwin.h
+    mainwin.h \
+    record.h \
+    user.h
 
 FORMS += \
     loginwin.ui \
