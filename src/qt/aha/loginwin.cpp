@@ -7,6 +7,7 @@ LoginWin::LoginWin(QWidget *parent) :
     ui(new Ui::LoginWin)
 {
     ui->setupUi(this);
+    this->setStyleSheet("{background-image:url(:/image/image/bg.png);}");
 }
 
 LoginWin::~LoginWin()
