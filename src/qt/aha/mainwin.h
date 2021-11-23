@@ -2,6 +2,7 @@
 #define MAINWIN_H
 
 #include <QMainWindow>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWin; }
