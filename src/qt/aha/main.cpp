@@ -1,4 +1,6 @@
 #include "mainwin.h"
+#include "loginwin.h"
+#include "databasehandler.h"
 
 #include <QApplication>
 #include <QFile>
@@ -7,6 +9,8 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    DatabaseHandler dbhandler;
 
     MainWin w;
 
