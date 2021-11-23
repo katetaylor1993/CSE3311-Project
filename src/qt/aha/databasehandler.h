@@ -1,10 +1,9 @@
- #ifndef DATABASEHANDLER_H
+#ifndef DATABASEHANDLER_H
 #define DATABASEHANDLER_H
 
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QJsonDocument>
 
 class DatabaseHandler : public QObject
 {
