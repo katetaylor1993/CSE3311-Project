@@ -1,5 +1,6 @@
-QT       += core gui
-QT += network
+
+QT       += core gui printsupport network
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +11,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+
+    qcustomplot.cpp
     databasehandler.cpp \
     filters.cpp \
     login.cpp \
@@ -19,14 +22,17 @@ SOURCES += \
     record.cpp \
     user.cpp
 
+
 HEADERS += \
     databasehandler.h \
     filters.h \
     login.h \
     loginwin.h \
     mainwin.h \
+    qcustomplot.h \
     record.h \
     user.h
+
 
 FORMS += \
     loginwin.ui \
@@ -36,3 +42,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc
