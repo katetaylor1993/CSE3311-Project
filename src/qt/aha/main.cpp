@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QFile>
+#include <QStyleOptionTitleBar>
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
 
 
     w.setWindowState(Qt::WindowMaximized);
+    w.setWindowTitle("Aha");
     w.show();
     return app.exec();
 }
