@@ -1,4 +1,6 @@
-QT       += core gui printsupport
+
+QT       += core gui printsupport network
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,15 +11,28 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    loginwin.cpp \
-    mainwin.cpp \
+
     qcustomplot.cpp
+    databasehandler.cpp \
+    filters.cpp \
+    login.cpp \
+    loginwin.cpp \
+    main.cpp \
+    mainwin.cpp \
+    record.cpp \
+    user.cpp
+
 
 HEADERS += \
+    databasehandler.h \
+    filters.h \
+    login.h \
     loginwin.h \
     mainwin.h \
-    qcustomplot.h
+    qcustomplot.h \
+    record.h \
+    user.h
+
 
 FORMS += \
     loginwin.ui \
