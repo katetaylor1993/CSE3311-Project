@@ -483,7 +483,7 @@ QScrollBar::sub-page:vertical
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
-     <number>0</number>
+     <number>7</number>
     </property>
     <property name="leftMargin">
      <number>0</number>
@@ -503,6 +503,7 @@ QScrollBar::sub-page:vertical
        <string notr="true">QFrame
 {
 	background: #ADE2FF;
+	border-radius: 15px;
 }</string>
       </property>
       <property name="frameShape">
@@ -624,6 +625,9 @@ QScrollBar::sub-page:vertical
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius: 15px;</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -741,6 +745,9 @@ QScrollBar::sub-page:vertical
     </item>
     <item>
      <widget class="QFrame" name="ui_panel">
+      <property name="styleSheet">
+       <string notr="true">border-radius: 15px;</string>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -749,7 +756,7 @@ QScrollBar::sub-page:vertical
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_18">
        <property name="spacing">
-        <number>0</number>
+        <number>7</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -1132,8 +1139,8 @@ QPushButton::hover
                  <string notr="true">QFrame
 {
 	background: #D6F1FF;
-    opacity: 70;
-
+   	border-bottom-right-radius:opx;
+	border-bottom-left-radius:opx;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1269,7 +1276,7 @@ QPushButton::hover
                  <string notr="true">QFrame
 {
 	background: #D6F1FF;
-
+border-radius:opx;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1296,6 +1303,9 @@ QPushButton::hover
                  </property>
                  <item>
                   <widget class="QFrame" name="start_date_block">
+                   <property name="styleSheet">
+                    <string notr="true">border-radius: 0px;</string>
+                   </property>
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
@@ -1391,6 +1401,12 @@ QPushButton::hover
                        <iconset resource="resources.qrc">
                         <normaloff>:/pics/picture/refresh.png</normaloff>:/pics/picture/refresh.png</iconset>
                       </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
                      </widget>
                     </item>
                     <item>
@@ -1398,6 +1414,12 @@ QPushButton::hover
                       <property name="icon">
                        <iconset resource="resources.qrc">
                         <normaloff>:/pics/picture/clear.png</normaloff>:/pics/picture/clear.png</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
                       </property>
                      </widget>
                     </item>
@@ -1504,6 +1526,13 @@ QPushButton::hover
                   <height>80</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">QFrame{
+	background: #D6F1FF;
+   	border-top-right-radius:opx;
+	border-top-left-radius:opx;
+}</string>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
@@ -1517,13 +1546,25 @@ QPushButton::hover
                     <iconset resource="resources.qrc">
                      <normaloff>:/pics/picture/bar-chart.png</normaloff>:/pics/picture/bar-chart.png</iconset>
                    </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QPushButton" name="pie_chart_button">
                    <property name="icon">
-                    <iconset>
-                     <normaloff>picture/pie_chart.png</normaloff>picture/pie_chart.png</iconset>
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/pics/picture/pie_chart.png</normaloff>:/pics/picture/pie_chart.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -1532,6 +1573,12 @@ QPushButton::hover
                    <property name="icon">
                     <iconset resource="resources.qrc">
                      <normaloff>:/pics/picture/line-chart.png</normaloff>:/pics/picture/line-chart.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
