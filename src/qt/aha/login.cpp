@@ -4,7 +4,6 @@ Login::Login(QString username, QString password) :
     m_username{username},
     m_password{password}
 {
-
 }
 
 Login::Login(Login * original) :

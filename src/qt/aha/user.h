@@ -20,17 +20,5 @@ private:
 
 };
 
-class Employee : public User
-{
-public:
-    explicit Employee(QString name, Login login);
-};
-
-class Supervisor : public User
-{
-public:
-    explicit Supervisor(QString name, Login login, bool admin);
-    QList<Employee> m_employees;
-};
 
 #endif // USER_H

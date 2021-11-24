@@ -4,7 +4,7 @@
 #include <QDate>
 #include <QList>
 
-#include "user.h"
+#include "employee.h"
 
 class Filters
 {

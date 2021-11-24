@@ -4,6 +4,7 @@
 #include <QDialog>
 
 #include "databasehandler.h"
+#include "login.h"
 
 namespace Ui {
 class LoginWin;
@@ -19,10 +20,14 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void loginSuccess();
 
 private:
     Ui::LoginWin *ui;
     DatabaseHandler *m_dbh;
+
+signals:
+    void currentUser(Login login);
 };
 
 #endif // LOGINWIN_H

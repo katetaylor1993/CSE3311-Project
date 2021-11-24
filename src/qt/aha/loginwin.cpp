@@ -8,6 +8,7 @@ LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
     m_dbh{dbh}
 {
     ui->setupUi(this);
+    connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
 }
 
 LoginWin::~LoginWin()
@@ -34,5 +35,13 @@ void LoginWin::on_pushButton_clicked()
     {
         QMessageBox::warning(this,"Login","Username and password combination is not correct.");
     }
+}
+
+void LoginWin::loginSuccess()
+{
+    QString user = ui->lineEdit_userName->text();
+    QString pass = ui->lineEdit_password->text();
+    emit currentUser(Login(user,pass));
+    this->done(1);
 }
 

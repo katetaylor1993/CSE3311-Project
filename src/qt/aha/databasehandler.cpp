@@ -54,8 +54,9 @@ DatabaseHandler::~DatabaseHandler()
 QString DatabaseHandler::readUsersName(QString username)
 {
      m_networkManager = new QNetworkAccessManager(this);
-     m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database/User1/name.json")));
+     m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database/User2/name.json")));
      //qDebug() << m_networkReply->readAll();
+
      connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
 
 
@@ -69,9 +70,15 @@ QString DatabaseHandler::readUsersName(QString username)
 void DatabaseHandler::networkReplyReadyRead()
 {
 
-    qDebug() << m_networkReply->readAll();
-//    QByteArray response = m_networkReply->readAll();
-//    qDebug() << response;
+    QByteArray arr = m_networkReply->readAll();
+    QString str = QString(arr);
+    if(str.contains("VerifyPasswordResponse"))
+    {
+        if(str.contains("\"registered\": true"))
+        {
+            emit userSignedIn();
+        }
+    }
     m_networkReply->deleteLater();
 
     //parseResponse( response);
@@ -139,7 +146,7 @@ void DatabaseHandler::signUserIn(const QString &emailAddress, const QString &pas
     QVariantMap variantPayload;
     variantPayload["email"] = emailAddress;
     variantPayload["password"] = password;
-    variantPayload["returnSecureToken"] = true;
+    variantPayload["returnSecureToken"] = false;
 
     QJsonDocument jsonPayload = QJsonDocument::fromVariant( variantPayload);
     performPOST( signInEndpoint, jsonPayload);
