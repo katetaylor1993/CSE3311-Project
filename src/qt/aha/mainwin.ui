@@ -568,11 +568,11 @@ QScrollBar::sub-page:vertical
               <height>50</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">image: url(:/image/image/Aha-Logo.png);</string>
-            </property>
             <property name="text">
              <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources.qrc">:/pics/picture/Aha-Logo.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -846,14 +846,14 @@ QScrollBar::sub-page:vertical
               <widget class="QPushButton" name="m_button">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>40</horstretch>
-                 <verstretch>40</verstretch>
+                 <horstretch>50</horstretch>
+                 <verstretch>50</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>40</width>
-                 <height>40</height>
+                 <width>50</width>
+                 <height>50</height>
                 </size>
                </property>
                <property name="maximumSize">
@@ -878,8 +878,8 @@ QPushButton::hover
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
-                 <normaloff>:/image/image/menu.png</normaloff>:/image/image/menu.png</iconset>
+                <iconset resource="resources.qrc">
+                 <normaloff>:/pics/picture/menu.png</normaloff>:/pics/picture/menu.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -992,12 +992,15 @@ QPushButton::hover
 }
 </string>
                </property>
-               <property name="text">
-                <string/>
-               </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>image/hide.png</normaloff>image/hide.png</iconset>
+                <iconset resource="resources.qrc">
+                 <normaloff>:/pics/picture/hide.png</normaloff>:/pics/picture/hide.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -1015,12 +1018,18 @@ QPushButton::hover
 }
 </string>
                </property>
-               <property name="text">
-                <string/>
-               </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>image/resize.png</normaloff>image/resize.png</iconset>
+                <iconset resource="resources.qrc">
+                 <normaloff>:/pics/picture/resize.png</normaloff>:/pics/picture/resize.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -1038,12 +1047,15 @@ QPushButton::hover
 }
 </string>
                </property>
-               <property name="text">
-                <string/>
-               </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>image/close.png</normaloff>image/close.png</iconset>
+                <iconset resource="resources.qrc">
+                 <normaloff>:/pics/picture/close.png</normaloff>:/pics/picture/close.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -1374,21 +1386,18 @@ QPushButton::hover
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QPushButton" name="pushButton_8">
-                      <property name="text">
-                       <string/>
-                      </property>
+                     <widget class="QPushButton" name="pushButton_6">
                       <property name="icon">
-                       <iconset resource="resource.qrc">
-                        <normaloff>:/image/image/refresh.png</normaloff>:/image/image/refresh.png</iconset>
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/pics/picture/refresh.png</normaloff>:/pics/picture/refresh.png</iconset>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QPushButton" name="pushButton_7">
+                     <widget class="QPushButton" name="pushButton_2">
                       <property name="icon">
-                       <iconset>
-                        <normaloff>image/clear.png</normaloff>image/clear.png</iconset>
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/pics/picture/clear.png</normaloff>:/pics/picture/clear.png</iconset>
                       </property>
                      </widget>
                     </item>
@@ -1503,32 +1512,26 @@ QPushButton::hover
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_7">
                  <item>
-                  <widget class="QPushButton" name="pushButton_2">
+                  <widget class="QPushButton" name="bar_chart_button">
                    <property name="icon">
-                    <iconset>
-                     <normaloff>image/bar-chart.png</normaloff>image/bar-chart.png</iconset>
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/pics/picture/bar-chart.png</normaloff>:/pics/picture/bar-chart.png</iconset>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_3">
-                   <property name="text">
-                    <string/>
-                   </property>
+                  <widget class="QPushButton" name="pie_chart_button">
                    <property name="icon">
                     <iconset>
-                     <normaloff>image/line-chart.png</normaloff>image/line-chart.png</iconset>
+                     <normaloff>picture/pie_chart.png</normaloff>picture/pie_chart.png</iconset>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
-                   <property name="text">
-                    <string/>
-                   </property>
+                  <widget class="QPushButton" name="line_chart_button">
                    <property name="icon">
-                    <iconset>
-                     <normaloff>image/pie_chart.png</normaloff>image/pie_chart.png</iconset>
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/pics/picture/line-chart.png</normaloff>:/pics/picture/line-chart.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -2176,7 +2179,7 @@ QPushButton::hover
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>
