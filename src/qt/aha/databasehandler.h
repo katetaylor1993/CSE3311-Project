@@ -16,6 +16,8 @@ public:
     void setAPIKey( const QString & apiKey);
     void signUserUp( const QString & emailAddress, const QString & password);
     void signUserIn( const QString & emailAddress, const QString & password);
+    QString readUsersName(QString username);
+
 
 public slots:
     void networkReplyReadyRead();
