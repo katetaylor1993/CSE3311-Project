@@ -8,9 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    DatabaseHandler dbHandler;
-    dbHandler.setAPIKey("AIzaSyD_xlNz0ZkNP0GMwpBEgpvVudJb4v0v6Z8");
-    dbHandler.readUsersName("Something");
+
     //dbHandler.signUserUp( "NewUser54Email@gmail.com", "Password123!");
     //dbHandler.signUserIn( "C55@gmail.com", "Password123!");
 

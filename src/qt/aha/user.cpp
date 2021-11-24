@@ -17,7 +17,4 @@ Supervisor::Supervisor(QString name, Login login, bool admin) :
     User(name, Login(&login),true, admin)
 {}
 
-void Supervisor::addEmployee(Employee toAdd)
-{
-    m_employees.push_back(toAdd);
-}
+

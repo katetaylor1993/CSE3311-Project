@@ -2,9 +2,10 @@
 #include "ui_loginwin.h"
 #include <QMessageBox>
 
-LoginWin::LoginWin(QWidget *parent) :
+LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::LoginWin)
+    ui(new Ui::LoginWin),
+    m_dbh{dbh}
 {
     ui->setupUi(this);
 }
@@ -18,6 +19,8 @@ void LoginWin::on_pushButton_clicked()
 {
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
+
+    m_dbh->signUserIn(user, pass);
 
     //TODO: This needs to be a real verification of user and pass
     if(user == "test" && pass == "test")

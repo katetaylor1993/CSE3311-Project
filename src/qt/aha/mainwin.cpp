@@ -1,6 +1,7 @@
 #include "mainwin.h"
 #include "ui_mainwin.h"
 #include "loginwin.h"
+#include "databasehandler.h"
 #include <QMessageBox>
 #include <QPixmap>
 
@@ -8,8 +9,11 @@ MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWin)
 {
+    DatabaseHandler * dbHandler = new DatabaseHandler(this);
+    dbHandler->setAPIKey("AIzaSyD_xlNz0ZkNP0GMwpBEgpvVudJb4v0v6Z8");
+    dbHandler->readUsersName("Something");
     // first, user needs to login
-    LoginWin * login = new LoginWin(this);
+    LoginWin * login = new LoginWin(dbHandler, this);
     m_currentUser = login->exec();
 
     //check that user is valid before launching the window
