@@ -38,8 +38,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#LoginWin
-{border-image: url(:/pics/picture/login-bg.png)}
+
 /*-----QWidget-----*/
 QWidget
 {
@@ -491,12 +490,12 @@ QScrollBar::sub-page:vertical
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">	background: rgba(255,255, 255,200);
+    <string notr="true">	background: rgba(0, 150, 199,70);
 	color: #03045E;
-	border-top-right-radius: 5px;
-	border-top-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	border-bottom-left-radius: 5px;
+	border-top-right-radius: 10px;
+	border-top-left-radius:10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius:10px;
 
 </string>
    </property>
@@ -521,10 +520,10 @@ QScrollBar::sub-page:vertical
 	color: #fff;
 	font-size: 15px;
 	font-weight: bold;
-	border-top-right-radius: 15px;
-	border-top-left-radius: 0px;
-	border-bottom-right-radius: 0px;
-	border-bottom-left-radius: 15px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
 	padding: 5 15 5 15;
 }</string>
     </property>
@@ -607,7 +606,8 @@ background-color: transparent
     <property name="styleSheet">
      <string notr="true">QLineEdit
 {
-	background: rgb(255, 255, 255);
+	background:rgb(255, 255, 255);
+
 }</string>
     </property>
    </widget>
@@ -623,7 +623,7 @@ background-color: transparent
     <property name="styleSheet">
      <string notr="true">QLineEdit
 {
-	background: rgb(255, 255, 255);
+	background:rgb(255, 255, 255);
 
 }</string>
     </property>
