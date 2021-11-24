@@ -1,5 +1,5 @@
 
-QT       += core gui printsupport network
+QT       += core gui printsupport network sql
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -48,3 +48,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+QMAKE_CXXFLAGS += -std=gnu++11

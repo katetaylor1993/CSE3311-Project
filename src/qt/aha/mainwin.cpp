@@ -9,7 +9,7 @@ MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWin)
 {
-    DatabaseHandler * dbHandler = new DatabaseHandler(this);
+    DatabaseHandler * dbHandler = DatabaseHandler::getInstance();
     dbHandler->setAPIKey("AIzaSyD_xlNz0ZkNP0GMwpBEgpvVudJb4v0v6Z8");
     dbHandler->readUsersName("Something");
     // first, user needs to login

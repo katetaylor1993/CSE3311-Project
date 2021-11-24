@@ -5,12 +5,13 @@
 #include <QApplication>
 #include <QFile>
 
+DatabaseHandler * DatabaseHandler::obj;
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    //dbHandler.signUserUp( "NewUser54Email@gmail.com", "Password123!");
-    //dbHandler.signUserIn( "C55@gmail.com", "Password123!");
+    DatabaseHandler::getInstance()->connectToDB();
 
     MainWin w;
 

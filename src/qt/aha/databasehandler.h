@@ -4,18 +4,30 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QtSql/QSqlDatabase>
 
 class DatabaseHandler : public QObject
 {
     Q_OBJECT
-public:
+private:
+    static DatabaseHandler * obj;
     explicit DatabaseHandler(QObject *parent = nullptr);
+public:
+    static DatabaseHandler* getInstance()
+    {
+        if(obj == nullptr)
+        {
+            static DatabaseHandler instance;
+            obj = &instance;
+        }
+        return obj;
+    }
     ~DatabaseHandler();
 
     // Database Authorization
     void setAPIKey( const QString & apiKey);
     void signUserUp( const QString & emailAddress, const QString & password);
-    void signUserIn( const QString & emailAddress, const QString & password);
+    void connectToDB();
     QString readUsersName(QString username);
 
 
@@ -25,7 +37,14 @@ public slots:
 
 signals:
     void userSignedIn();
+    void criticalError();
 private:
+    QString m_username;
+    QString m_password;
+    QString m_server;
+    int m_port;
+    QSqlDatabase m_db;
+
     QNetworkAccessManager * m_networkManager;
     QNetworkReply * m_networkReply;
 

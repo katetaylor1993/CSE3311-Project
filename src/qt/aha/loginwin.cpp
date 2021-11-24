@@ -21,7 +21,7 @@ void LoginWin::on_pushButton_clicked()
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
 
-    m_dbh->signUserIn(user, pass);
+    //m_dbh->signUserIn(user, pass);
 
     //TODO: This needs to be a real verification of user and pass
     if(user == "test" && pass == "test")
