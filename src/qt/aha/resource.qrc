@@ -10,7 +10,7 @@
         <file>image/pie_chart.png</file>
         <file>image/refresh.png</file>
         <file>image/resize.png</file>
-        <file>image/bg.png</file>
+        <file>image/login-bg.png</file>
     </qresource>
     <qresource prefix="/style">
         <file>style/Toolery.qss</file>
