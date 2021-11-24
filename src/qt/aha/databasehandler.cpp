@@ -11,7 +11,11 @@
 #include <QXmlStreamReader>
 
 DatabaseHandler::DatabaseHandler(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_username{"JfadHzJmgq"},
+      m_password{"mpPExijexc"},
+      m_server{"remotemysql.com"},
+      m_port{3306}
 {
     //m_networkManager = new QNetworkAccessManager(this);
 
@@ -72,11 +76,17 @@ void DatabaseHandler::networkReplyReadyRead()
 
     QByteArray arr = m_networkReply->readAll();
     QString str = QString(arr);
+
+    // response to user signing in
     if(str.contains("VerifyPasswordResponse"))
     {
         if(str.contains("\"registered\": true"))
         {
             emit userSignedIn();
+        }
+        else
+        {
+            //error and close window
         }
     }
     m_networkReply->deleteLater();
@@ -137,25 +147,24 @@ void DatabaseHandler::signUserUp(const QString &emailAddress, const QString &pas
 
     QJsonDocument jsonPayload = QJsonDocument::fromVariant( variantPayload);
     performPOST( signUpEndpoint, jsonPayload);
-
 }
 
-void DatabaseHandler::signUserIn(const QString &emailAddress, const QString &password)
+void DatabaseHandler::connectToDB() //application connect with database
 {
-    QString signInEndpoint = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + m_apiKey;
-    QVariantMap variantPayload;
-    variantPayload["email"] = emailAddress;
-    variantPayload["password"] = password;
-    variantPayload["returnSecureToken"] = false;
+    m_db = QSqlDatabase::addDatabase("QMYSQL");
+    m_db.setHostName(m_server);
+    m_db.setPort(m_port);
+    m_db.setDatabaseName(m_username);
+    m_db.setUserName(m_username);
+    m_db.setPassword(m_password);
 
-    QJsonDocument jsonPayload = QJsonDocument::fromVariant( variantPayload);
-    performPOST( signInEndpoint, jsonPayload);
-
+    try
+    {
+        m_db.open();
+    }
+    catch(std::exception e)
+    {
+        emit criticalError();
+    }
 }
 
-//Employee DatabaseHandler::getEmployee(QString username)
-//{
-//    QString name = "Bob";
-//    Employee ret;// = Employee(name, username);
-
-//}
