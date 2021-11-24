@@ -1,15 +1,19 @@
 #include "databasehandler.h"
+#include "user.h"
+
 #include <QNetworkRequest>
 #include <QDebug>
 #include <QJsonDocument>
 #include <QVariantMap>
 #include <QJsonObject>
 #include <QFile>
+#include <QTextStream>
+#include <QXmlStreamReader>
 
 DatabaseHandler::DatabaseHandler(QObject *parent)
     : QObject(parent)
 {
-    m_networkManager = new QNetworkAccessManager(this);
+    //m_networkManager = new QNetworkAccessManager(this);
 
    // m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json")));
 
@@ -22,23 +26,23 @@ DatabaseHandler::DatabaseHandler(QObject *parent)
 
 
     // post data to firebase using post command
-    QString val;
-    QFile file;
-    file.setFileName("C:/QT/sample2.json");
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    val = file.readAll();
-    file.close();
-    qWarning() << val;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(val.toUtf8());
+//    QString val;
+//    QFile file;
+//    file.setFileName("C:/QT/sample2.json");
+//    file.open(QIODevice::ReadOnly | QIODevice::Text);
+//    val = file.readAll();
+//    file.close();
+//    qWarning() << val;
+//    QJsonDocument jsonDoc = QJsonDocument::fromJson(val.toUtf8());
 
 
 //    QVariantMap newUser;
 //    newUser[ "Username" ] = "RandomUser4";
 //    newUser[ "Password" ] = "1234567";
 //    QJsonDocument jsonDoc = QJsonDocument::fromVariant( newUser );
-    QNetworkRequest newUserRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json"));
-    newUserRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
-    m_networkManager->post(newUserRequest, jsonDoc.toJson());
+//    QNetworkRequest newUserRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json"));
+//    newUserRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
+//    m_networkManager->post(newUserRequest, jsonDoc.toJson());
 
 }
 
@@ -47,14 +51,30 @@ DatabaseHandler::~DatabaseHandler()
     m_networkManager->deleteLater();
 }
 
+QString DatabaseHandler::readUsersName(QString username)
+{
+     m_networkManager = new QNetworkAccessManager(this);
+     m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database/User1/name.json")));
+     //qDebug() << m_networkReply->readAll();
+     connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
+
+
+     qDebug() << m_networkReply->readAll(); // Reads \"Cameron\" from the database but I cannot convert m_networkReply to a string
+     QString response = (QString)m_networkReply->readAll();
+
+     return response;
+
+}
+
 void DatabaseHandler::networkReplyReadyRead()
 {
+
     qDebug() << m_networkReply->readAll();
-    QByteArray response = m_networkReply->readAll();
-    qDebug() << response;
+//    QByteArray response = m_networkReply->readAll();
+//    qDebug() << response;
     m_networkReply->deleteLater();
 
-    parseResponse( response);
+    //parseResponse( response);
 }
 
 void DatabaseHandler::performAuthenticatedDatabaseCall()
@@ -125,3 +145,10 @@ void DatabaseHandler::signUserIn(const QString &emailAddress, const QString &pas
     performPOST( signInEndpoint, jsonPayload);
 
 }
+
+//Employee DatabaseHandler::getEmployee(QString username)
+//{
+//    QString name = "Bob";
+//    Employee ret;// = Employee(name, username);
+
+//}
