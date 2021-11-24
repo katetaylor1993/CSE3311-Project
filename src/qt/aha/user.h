@@ -30,9 +30,6 @@ class Supervisor : public User
 {
 public:
     explicit Supervisor(QString name, Login login, bool admin);
-    void addEmployee(Employee toAdd);
-
-private:
     QList<Employee> m_employees;
 };
 
