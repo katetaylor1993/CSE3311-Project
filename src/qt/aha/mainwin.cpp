@@ -93,7 +93,7 @@ void MainWin::on_m_button_clicked()
 //    }
 
     animation1= new QPropertyAnimation(ui->menu, "geometry");
-    animation1->setDuration(1000);
+    animation1->setDuration(900);
     QRect startRect1(ui->menu->geometry());
     QRect endRect1(ui->menu->geometry().translated(px, 0));
     animation1->setStartValue(startRect1);//QPoint(btnRight,btnBottom));//QPoint(0,0));
@@ -103,7 +103,7 @@ void MainWin::on_m_button_clicked()
 
 
     animation2= new QPropertyAnimation(ui->ui_panel, "geometry");
-    animation2->setDuration(1000);
+    animation2->setDuration(900);
     QRect startRect2(ui->ui_panel->geometry());
     QRect endRect2(ui->ui_panel->x()+px,ui->ui_panel->y(),ui->ui_panel->width()-px,ui->ui_panel->height());
     animation2->setStartValue(startRect2);//QPoint(btnRight,btnBottom));//QPoint(0,0));
