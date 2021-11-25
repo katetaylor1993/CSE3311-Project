@@ -29,10 +29,6 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart->replot();
         ui->line_chart->update();
 
-//        ui->comboBox->addItem("Career and education");
-//        ui->comboBox->addItem("News and media");
-//        ui->comboBox->addItem("Internet and telecom");
-
 
 
 
@@ -53,19 +49,48 @@ MainWin::~MainWin()
     delete ui;
 }
 
-//void MainWin::handleButton()
-//{
-////Create animation
-//QPropertyAnimation *animation = new QPropertyAnimation(menu, "geometry");
-//animation->setDuration(1000);
-//QRect startRect(-100,50,50,200);
-//QRect endRect(50,50,50,200);
-//animation->setStartValue(startRect);//QPoint(btnRight,btnBottom));//QPoint(0,0));
-//animation->setEndValue(endRect);//QPoint(100,100))
-//animation->start();
-//}
+
+void MainWin::on_database_button_clicked()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("remotemysql.com");
+    db.setDatabaseName("JfadHzJmgq");
+    db.setUserName("JfadHzJmgq");
+    db.setPassword("mpPExijexc");
 
 
+    if(db.open()){
+        QMessageBox::information(this,"Connection","Databse Connected.");
+    }else{
+        QMessageBox::information(this,"Connection","Cannnot connected to database.");
+    }
+
+    qDebug() << "hi" ;
+
+
+
+    QSqlQuery query;
+    query.prepare("SELECT emp_username FROM supervises WHERE super_username='super1';");
+    query.exec();
+
+        if(query.size()>0){
+            while(query.next()){
+                QString emp_username=query.value(0).toString().toUtf8().constData();
+                qDebug() <<emp_username;
+                qDebug() << "/ " ;
+
+            }
+
+        }else{
+
+        }
+
+
+
+
+}
+
+//menu animation
 void MainWin::on_m_button_clicked()
 {
     int px=ui->menu->x();
@@ -80,18 +105,6 @@ void MainWin::on_m_button_clicked()
         px=0;
     }
 
-//    int w=ui->main_panel->width();
-
-//    if (w==1717){
-//        w=1920;
-//    }
-//    else if (w==1920){
-//        w==1717;
-//    }
-//    else{
-//       w=w;
-//    }
-
     animation1= new QPropertyAnimation(ui->menu, "geometry");
     animation1->setDuration(900);
     QRect startRect1(ui->menu->geometry());
@@ -99,7 +112,6 @@ void MainWin::on_m_button_clicked()
     animation1->setStartValue(startRect1);//QPoint(btnRight,btnBottom));//QPoint(0,0));
     animation1->setEndValue(endRect1);//QPoint(100,100))
     animation1->setEasingCurve(QEasingCurve::InOutQuad);
-//    animation1->start();
 
 
     animation2= new QPropertyAnimation(ui->ui_panel, "geometry");
@@ -109,7 +121,6 @@ void MainWin::on_m_button_clicked()
     animation2->setStartValue(startRect2);//QPoint(btnRight,btnBottom));//QPoint(0,0));
     animation2->setEndValue(endRect2);//QPoint(100,100))
     animation2->setEasingCurve(QEasingCurve::InOutQuad);
-//    animation2->start();
 
     animationGroup = new QParallelAnimationGroup(this);
     animationGroup->addAnimation(animation1);
@@ -118,25 +129,25 @@ void MainWin::on_m_button_clicked()
     animationGroup->start();
 }
 
-//plot stack functions
-void MainWin::on_bar_chart_button_clicked()
+//header navigation functions
+void MainWin::on_hide_button_clicked()
 {
-    ui->plot_stack->setCurrentIndex(0);
+    this->hide();
+}
+
+void MainWin::on_resize_button_clicked(bool checked)
+{
+    if(checked){
+        this->resize(1080,720);
+    }
+    else{
+        this->showMaximized();
+    }
+
 }
 
 
-void MainWin::on_pie_chart_button_clicked()
-{
-    ui->plot_stack->setCurrentIndex(1);
-}
-
-
-void MainWin::on_line_chart_button_clicked()
-{
-    ui->plot_stack->setCurrentIndex(2);
-}
-
-//ui stack functions
+//ui stack functions for buttons in the menu
 void MainWin::on_workforce_button_clicked()
 {
     ui->ui_stack->setCurrentIndex(0);
@@ -161,33 +172,57 @@ void MainWin::on_setting_button_clicked()
     ui->ui_title->setText("<h1>Setting</h1>");
 }
 
-
-
-
-
-
-
-
-
-
-void MainWin::on_hide_button_clicked()
+//plot stack functions
+void MainWin::on_bar_chart_button_clicked()
 {
-    this->hide();
+    ui->plot_stack->setCurrentIndex(0);
 }
 
-void MainWin::on_resize_button_clicked(bool checked)
+void MainWin::on_pie_chart_button_clicked()
 {
-    if(checked){
-        this->resize(1080,720);
-    }
-    else{
-        this->showMaximized();
-    }
-
+    ui->plot_stack->setCurrentIndex(1);
 }
+
+void MainWin::on_line_chart_button_clicked()
+{
+    ui->plot_stack->setCurrentIndex(2);
+}
+
+
+
 
 void MainWin::on_close_button_clicked()
 {
     this->close();
+}
+
+
+
+
+//setting stack functions
+void MainWin::on_user_button_clicked()
+{
+    ui->setting_stack->setCurrentIndex(0);
+
+//    model =new QSqlTableModel(this);
+//    model->setQuery("SELECT * FROM user");
+//    model->setHeaderData(0, Qt::Horizontal, tr("username"));
+//    model->setHeaderData(1, Qt::Horizontal, tr("password"));
+//    model->setHeaderData(2, Qt::Horizontal, tr("name"));
+//    model->setHeaderData(3, Qt::Horizontal, tr("isAdmin"));
+//    model->setHeaderData(4, Qt::Horizontal, tr("isSupervisor"));
+//    ui->user_table_view->setModel(model);
+//    ui->user_table_view->show();
+
+    model =new QSqlTableModel(this);
+    model->setQuery("SELECT emp_username FROM supervises WHERE super_username='super1'");
+    model->setHeaderData(0, Qt::Horizontal, tr("emp_username"));
+    ui->user_table_view->setModel(model);
+    ui->user_table_view->show();
+}
+
+void MainWin::on_category_button_clicked()
+{
+    ui->setting_stack->setCurrentIndex(1);
 }
 
