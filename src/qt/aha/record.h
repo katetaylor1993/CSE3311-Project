@@ -16,6 +16,7 @@ private:
     QDate m_date;
     int m_seconds;
     QString m_domain;
+    QString m_user;
 };
 
 #endif // RECORD_H

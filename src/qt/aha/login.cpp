@@ -10,3 +10,5 @@ Login::Login(Login * original) :
     m_username(original->m_username),
     m_password(original->m_password)
 {}
+
+QString Login::Username(){return m_username;}

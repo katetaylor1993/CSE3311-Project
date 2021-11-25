@@ -6,6 +6,9 @@
 #include <QNetworkReply>
 #include <QtSql/QSqlDatabase>
 
+#include "record.h"
+#include "supervisor.h"
+
 class DatabaseHandler : public QObject
 {
     Q_OBJECT
@@ -24,20 +27,16 @@ public:
     }
     ~DatabaseHandler();
 
-    // Database Authorization
-    void setAPIKey( const QString & apiKey);
-    void signUserUp( const QString & emailAddress, const QString & password);
     void connectToDB();
-    QString readUsersName(QString username);
+    Supervisor getUserInfo(QString username);
+    bool attemptSignIn(QString username, QString password);
 
 
 public slots:
-    void networkReplyReadyRead();
-    void performAuthenticatedDatabaseCall();
 
 signals:
-    void userSignedIn();
     void criticalError();
+    void recordsAreReady(QList<Record> records);
 private:
     QString m_username;
     QString m_password;
@@ -45,16 +44,7 @@ private:
     int m_port;
     QSqlDatabase m_db;
 
-    QNetworkAccessManager * m_networkManager;
-    QNetworkReply * m_networkReply;
-
-    // Database Authorization
-    QString m_apiKey;
-    QString m_idToken;
-    void performPOST( const QString & url, const QJsonDocument & payload );
-    void parseResponse( const QByteArray & response);
-
-
+    QList<QString> getOneAttribute(QString attr, QString table, QString whereAttr, QString whereVal);
 };
 
 #endif // DATABASEHANDLER_H

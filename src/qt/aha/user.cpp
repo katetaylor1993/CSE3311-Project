@@ -10,4 +10,4 @@ User::User(QString name, Login login, bool appAcc, bool admAcc) :
 }
 
 
-
+QString User::Name() {return m_name;}

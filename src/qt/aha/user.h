@@ -11,8 +11,9 @@ public:
     explicit User(QString name, Login login, bool appAcc, bool admAcc);
     bool isAdmin();
     bool isSupervisor();
+    QString Name();
 
-private:
+protected:
     QString m_name;
     Login m_login;
     bool m_accessApp;

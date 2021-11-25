@@ -1,5 +1,6 @@
 #include "databasehandler.h"
 #include "user.h"
+#include "employee.h"
 
 #include <QNetworkRequest>
 #include <QDebug>
@@ -9,6 +10,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QXmlStreamReader>
+#include <QSqlQuery>
 
 DatabaseHandler::DatabaseHandler(QObject *parent)
     : QObject(parent),
@@ -16,137 +18,50 @@ DatabaseHandler::DatabaseHandler(QObject *parent)
       m_password{"mpPExijexc"},
       m_server{"remotemysql.com"},
       m_port{3306}
-{
-    //m_networkManager = new QNetworkAccessManager(this);
-
-   // m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json")));
-
-    //connect(this, &DatabaseHandler::userSignedIn, this, &DatabaseHandler::performAuthenticatedDatabaseCall);
-    //connect(this, &DatabaseHandler::userSignedIn, this, &DatabaseHandler::performAuthenticatedDatabaseCall);
-
-
-    //read data from firebase using get command // this messes up reading return msg from app outut
-    //connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
-
-
-    // post data to firebase using post command
-//    QString val;
-//    QFile file;
-//    file.setFileName("C:/QT/sample2.json");
-//    file.open(QIODevice::ReadOnly | QIODevice::Text);
-//    val = file.readAll();
-//    file.close();
-//    qWarning() << val;
-//    QJsonDocument jsonDoc = QJsonDocument::fromJson(val.toUtf8());
-
-
-//    QVariantMap newUser;
-//    newUser[ "Username" ] = "RandomUser4";
-//    newUser[ "Password" ] = "1234567";
-//    QJsonDocument jsonDoc = QJsonDocument::fromVariant( newUser );
-//    QNetworkRequest newUserRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json"));
-//    newUserRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
-//    m_networkManager->post(newUserRequest, jsonDoc.toJson());
-
-}
+{}
 
 DatabaseHandler::~DatabaseHandler()
 {
-    m_networkManager->deleteLater();
+    delete obj;
 }
 
-QString DatabaseHandler::readUsersName(QString username)
+bool DatabaseHandler::attemptSignIn(QString username, QString password)
 {
-     m_networkManager = new QNetworkAccessManager(this);
-     m_networkReply = m_networkManager->get(QNetworkRequest(QUrl("https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database/User2/name.json")));
-     //qDebug() << m_networkReply->readAll();
-
-     connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
-
-
-     qDebug() << m_networkReply->readAll(); // Reads \"Cameron\" from the database but I cannot convert m_networkReply to a string
-     QString response = (QString)m_networkReply->readAll();
-
-     return response;
-
-}
-
-void DatabaseHandler::networkReplyReadyRead()
-{
-
-    QByteArray arr = m_networkReply->readAll();
-    QString str = QString(arr);
-
-    // response to user signing in
-    if(str.contains("VerifyPasswordResponse"))
-    {
-        if(str.contains("\"registered\": true"))
-        {
-            emit userSignedIn();
-        }
-        else
-        {
-            //error and close window
-        }
-    }
-    m_networkReply->deleteLater();
-
-    //parseResponse( response);
-}
-
-void DatabaseHandler::performAuthenticatedDatabaseCall()
-{
-    QString endPoint = "https://spyuser-65ed7-default-rtdb.firebaseio.com/User_Database.json?auth=" + m_idToken;
-    m_networkReply = m_networkManager->get(QNetworkRequest(QUrl(endPoint)));
-    connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
-
-}
-
-void DatabaseHandler::performPOST(const QString &url, const QJsonDocument &payload)
-{
-    QNetworkRequest newRequest( (QUrl(url)) );
-    newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
-    m_networkReply = m_networkManager->post(newRequest, payload.toJson());
-    connect(m_networkReply, &QNetworkReply::readyRead, this, &DatabaseHandler::networkReplyReadyRead);
-
-}
-
-void DatabaseHandler::parseResponse(const QByteArray &response)
-{
-    QJsonDocument jsonDocument = QJsonDocument::fromJson( response );
-    if( jsonDocument.object().contains("error") )
-    {
-        qDebug() << "Error occured!" << response;
-    }
-    else if ( jsonDocument.object().contains("kind"))
-    {
-        QString idToken = jsonDocument.object().value("idToken").toString();
-        //qDebug() << "Obtained user ID token: " << idToken;
-        qDebug() << "User signed in Successfully!";
-        m_idToken = idToken;
-        emit userSignedIn();
-    }
+    QList<QString> pass = getOneAttribute("password","user","username",username);
+    if(pass.at(0) == password)
+        return true;
     else
+        return false;
+}
+
+Supervisor DatabaseHandler::getUserInfo(QString username)
+{
+    QString name, password, eName, eUser, ePass;
+    bool isAdmin;
+
+    name = getOneAttribute("name","user","username",username).at(0);
+    password = getOneAttribute("password","user","username",username).at(0);
+    if(getOneAttribute("is_admin","user","username",username).at(0)=="1")
+        isAdmin=true;
+    else
+        isAdmin=false;
+
+    Supervisor ret = Supervisor(name,Login(username,password),isAdmin);
+
+    // load up with employees
+    QList<QString> employees = getOneAttribute("emp_username","supervises","Super_unsername",username);
+    foreach(QString e,employees)
     {
-        qDebug() << "The response was: " << response;
+        eName = getOneAttribute("name","user","username",e).at(0);
+        eUser = getOneAttribute("username","user","username",e).at(0);
+        ePass = getOneAttribute("password","user","username",e).at(0);
+        Employee E = Employee(eName,Login(eUser,ePass));
+        ret.addEmployee(E);
     }
-}
 
-void DatabaseHandler::setAPIKey(const QString &apiKey)
-{
-    m_apiKey = apiKey;
-}
+    ret.printToDebug();
 
-void DatabaseHandler::signUserUp(const QString &emailAddress, const QString &password)
-{
-    QString signUpEndpoint = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + m_apiKey;
-    QVariantMap variantPayload;
-    variantPayload["email"] = emailAddress;
-    variantPayload["password"] = password;
-    variantPayload["returnSecureToken"] = true;
-
-    QJsonDocument jsonPayload = QJsonDocument::fromVariant( variantPayload);
-    performPOST( signUpEndpoint, jsonPayload);
+    return ret;
 }
 
 void DatabaseHandler::connectToDB() //application connect with database
@@ -158,13 +73,20 @@ void DatabaseHandler::connectToDB() //application connect with database
     m_db.setUserName(m_username);
     m_db.setPassword(m_password);
 
-    try
+    bool opened = m_db.open();
+
+    if(!opened){ qDebug() << "db not opened"; }
+}
+
+QList<QString> DatabaseHandler::getOneAttribute(QString attr, QString table, QString whereAttr, QString whereVal)
+{
+    QList<QString> ret;
+    QSqlQuery query = QSqlQuery("SELECT "+attr+" FROM "+table+" WHERE "+whereAttr+"=\""+whereVal+"\"",m_db);
+    query.setForwardOnly(true); //this saves memory and overhead
+    while(query.next())
     {
-        m_db.open();
+        ret.append(query.value(0).toString());
     }
-    catch(std::exception e)
-    {
-        emit criticalError();
-    }
+    return ret;
 }
 
