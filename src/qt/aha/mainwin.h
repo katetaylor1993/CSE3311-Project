@@ -1,6 +1,9 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
 
+#include <QtCore>
+#include <QtCore/QCoreApplication>
+
 #include <QMainWindow>
 #include <QVector>
 #include <QPropertyAnimation>
@@ -8,6 +11,12 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QWidget>
+#include <QDebug>
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QTextStream>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWin; }
@@ -45,11 +54,18 @@ private slots:
 
     void on_resize_button_clicked(bool checked);
 
+    void on_database_button_clicked();
+
+    void on_user_button_clicked();
+
+    void on_category_button_clicked();
+
 private:
     Ui::MainWin *ui;
     QPropertyAnimation *animation1;
     QPropertyAnimation *animation2;
     QParallelAnimationGroup* animationGroup;
+    QSqlQueryModel *model;
 
     //TODO: Change this to be class with more information about the user
     int m_currentUser;
