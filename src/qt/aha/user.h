@@ -12,6 +12,7 @@ public:
     bool isAdmin();
     bool isSupervisor();
     QString Name();
+    QString Username();
 
 protected:
     QString m_name;

@@ -30,6 +30,7 @@ public:
     void connectToDB();
     Supervisor getUserInfo(QString username);
     bool attemptSignIn(QString username, QString password);
+    QList<Record> getAllRecords(QList<Employee> employees);
 
 
 public slots:
@@ -44,7 +45,7 @@ private:
     int m_port;
     QSqlDatabase m_db;
 
-    QList<QString> getOneAttribute(QString attr, QString table, QString whereAttr, QString whereVal);
+    QList<QString> fetch(QString attr, QString table, QString whereAttr, QString whereVal);
 };
 
 #endif // DATABASEHANDLER_H

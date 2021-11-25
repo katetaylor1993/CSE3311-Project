@@ -9,7 +9,12 @@ LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
-    DatabaseHandler::getInstance()->getUserInfo("super1");
+    Employee one = Employee("Jane Doe",Login("emp1","Password123"));
+    Employee two = Employee("John Doe", Login("emp2","Password123"));
+    QList<Employee> temp;
+    temp.append(one);
+    temp.append(two);
+    m_dbh->getAllRecords(temp);
 }
 
 LoginWin::~LoginWin()
