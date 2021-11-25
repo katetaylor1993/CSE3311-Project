@@ -27,7 +27,7 @@ DatabaseHandler::~DatabaseHandler()
 
 bool DatabaseHandler::attemptSignIn(QString username, QString password)
 {
-    QList<QString> pass = getOneAttribute("password","user","username",username);
+    QList<QString> pass = fetch("password","user","username",username);
     if(pass.at(0) == password)
         return true;
     else
@@ -39,9 +39,9 @@ Supervisor DatabaseHandler::getUserInfo(QString username)
     QString name, password, eName, eUser, ePass;
     bool isAdmin;
 
-    name = getOneAttribute("name","user","username",username).at(0);
-    password = getOneAttribute("password","user","username",username).at(0);
-    if(getOneAttribute("is_admin","user","username",username).at(0)=="1")
+    name = fetch("name","user","username",username).at(0);
+    password = fetch("password","user","username",username).at(0);
+    if(fetch("is_admin","user","username",username).at(0)=="1")
         isAdmin=true;
     else
         isAdmin=false;
@@ -49,12 +49,12 @@ Supervisor DatabaseHandler::getUserInfo(QString username)
     Supervisor ret = Supervisor(name,Login(username,password),isAdmin);
 
     // load up with employees
-    QList<QString> employees = getOneAttribute("emp_username","supervises","Super_unsername",username);
+    QList<QString> employees = fetch("emp_username","supervises","Super_unsername",username);
     foreach(QString e,employees)
     {
-        eName = getOneAttribute("name","user","username",e).at(0);
-        eUser = getOneAttribute("username","user","username",e).at(0);
-        ePass = getOneAttribute("password","user","username",e).at(0);
+        eName = fetch("name","user","username",e).at(0);
+        eUser = fetch("username","user","username",e).at(0);
+        ePass = fetch("password","user","username",e).at(0);
         Employee E = Employee(eName,Login(eUser,ePass));
         ret.addEmployee(E);
     }
@@ -62,6 +62,33 @@ Supervisor DatabaseHandler::getUserInfo(QString username)
     ret.printToDebug();
 
     return ret;
+}
+
+QList<Record> DatabaseHandler::getAllRecords(QList<Employee> employees)
+{
+    foreach(Employee e, employees)
+    {
+        QList<QString> data = fetch("website","report","username",e.Username());
+        foreach(QString d, data)
+        {
+            qDebug() << d;
+        }
+        QList<Record> ret;
+        QString website, time, date;
+        QSqlQuery wq = QSqlQuery("SELECT website, time, date FROM report WHERE username=\""+e.Username()+"\"",m_db);
+        //QSqlQuery tq = QSqlQuery("SELECT time FROM report WHERE username=\""+e.Username()+"\"",m_db);
+        //QSqlQuery dq = QSqlQuery("SELECT date FROM report WHERE username=\""+e.Username()+"\"",m_db);
+        wq.setForwardOnly(true); //this saves memory and overhead
+        while(wq.next())
+        {
+            website = wq.value(0).toString();
+            time = wq.value(1).toString();
+            date = wq.value(2).toString();
+            qDebug() << website+", "+time+", "+date;
+        }
+
+    }
+    return QList<Record>();
 }
 
 void DatabaseHandler::connectToDB() //application connect with database
@@ -78,7 +105,7 @@ void DatabaseHandler::connectToDB() //application connect with database
     if(!opened){ qDebug() << "db not opened"; }
 }
 
-QList<QString> DatabaseHandler::getOneAttribute(QString attr, QString table, QString whereAttr, QString whereVal)
+QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)
 {
     QList<QString> ret;
     QSqlQuery query = QSqlQuery("SELECT "+attr+" FROM "+table+" WHERE "+whereAttr+"=\""+whereVal+"\"",m_db);
