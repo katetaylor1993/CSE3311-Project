@@ -10,14 +10,17 @@
 #include<QDebug>
 
 
+DatabaseHandler * DatabaseHandler::obj;
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    DatabaseHandler dbhandler;
+    DatabaseHandler::getInstance()->connectToDB();
 
 
     MainWin w;
+
 
     w.setWindowState(Qt::WindowMaximized);
     w.setWindowTitle("Aha");

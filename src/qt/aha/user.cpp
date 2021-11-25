@@ -9,15 +9,7 @@ User::User(QString name, Login login, bool appAcc, bool admAcc) :
 
 }
 
-Employee::Employee(QString name, Login login) :
-    User(name, Login(&login), false, false)
-{}
 
-Supervisor::Supervisor(QString name, Login login, bool admin) :
-    User(name, Login(&login),true, admin)
-{}
+QString User::Name() {return m_name;}
 
-void Supervisor::addEmployee(Employee toAdd)
-{
-    m_employees.push_back(toAdd);
-}
+QString User::Username() {return m_login.Username();}

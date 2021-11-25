@@ -11,6 +11,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+
+    employee.cpp \
     qcustomplot.cpp \
     databasehandler.cpp \
     filters.cpp \
@@ -19,18 +21,23 @@ SOURCES += \
     main.cpp \
     mainwin.cpp \
     record.cpp \
-    user.cpp \
+
+    supervisor.cpp \
+    user.cpp
+
 
 
 HEADERS += \
     qcustomplot.h \
     databasehandler.h \
+    employee.h \
     filters.h \
     login.h \
     loginwin.h \
     mainwin.h \
     qcustomplot.h \
     record.h \
+    supervisor.h \
     user.h
 
 
@@ -44,5 +51,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    resources.qrc
+
+    resource.qrc
+
+QMAKE_CXXFLAGS += -std=gnu++11
 

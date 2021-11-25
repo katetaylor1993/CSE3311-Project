@@ -4,22 +4,48 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QtSql/QSqlDatabase>
+
+#include "record.h"
+#include "supervisor.h"
 
 class DatabaseHandler : public QObject
 {
     Q_OBJECT
-public:
+private:
+    static DatabaseHandler * obj;
     explicit DatabaseHandler(QObject *parent = nullptr);
+public:
+    static DatabaseHandler* getInstance()
+    {
+        if(obj == nullptr)
+        {
+            static DatabaseHandler instance;
+            obj = &instance;
+        }
+        return obj;
+    }
     ~DatabaseHandler();
 
+    void connectToDB();
+    Supervisor getUserInfo(QString username);
+    bool attemptSignIn(QString username, QString password);
+    QList<Record> getAllRecords(QList<Employee> employees);
+
+
 public slots:
-    void networkReplyReadyRead();
 
 signals:
-
+    void criticalError();
+    void recordsAreReady(QList<Record> records);
 private:
-    QNetworkAccessManager * m_networkManager;
-    QNetworkReply * m_networkReply;
+    QString m_username;
+    QString m_password;
+    QString m_server;
+    int m_port;
+    QSqlDatabase m_db;
+
+    QList<QString> fetch(QString attr, QString table, QString whereAttr, QString whereVal);
 };
 
 #endif // DATABASEHANDLER_H

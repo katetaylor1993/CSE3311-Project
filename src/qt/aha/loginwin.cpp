@@ -2,13 +2,23 @@
 #include "ui_loginwin.h"
 #include <QMessageBox>
 
-LoginWin::LoginWin(QWidget *parent) :
+LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::LoginWin)
+    ui(new Ui::LoginWin),
+    m_dbh{dbh}
 {
     ui->setupUi(this);
+
     //this->showMaximized();
     this->setWindowState(Qt::WindowMaximized);
+
+    connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
+    Employee one = Employee("Jane Doe",Login("emp1","Password123"));
+    Employee two = Employee("John Doe", Login("emp2","Password123"));
+    QList<Employee> temp;
+    temp.append(one);
+    temp.append(two);
+    m_dbh->getAllRecords(temp);
 
 }
 
@@ -22,17 +32,23 @@ void LoginWin::on_pushButton_clicked()
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
 
-    //TODO: This needs to be a real verification of user and pass
-    if(user == "test" && pass == "test")
+    bool signInSuccess = m_dbh->attemptSignIn(user,pass);
+
+    if(signInSuccess)
     {
-        //pass back to parent info needed to log in
-        // TODO: This should pass back the id of the user that is logging in instead of 1
         this->done(1);
-        // this is a test comment!
     }
     else
     {
         QMessageBox::warning(this,"Login","Username and password combination is not correct.");
     }
+}
+
+void LoginWin::loginSuccess()
+{
+    QString user = ui->lineEdit_userName->text();
+    QString pass = ui->lineEdit_password->text();
+    emit currentUser(Login(user,pass));
+    this->done(1);
 }
 
