@@ -9,6 +9,10 @@ class Supervisor : public User
 public:
     explicit Supervisor(QString name, Login login, bool admin);
     QList<Employee> m_employees;
+    void addEmployee(Employee e);
+
+    //debug stuff
+    void printToDebug();
 };
 
 #endif // SUPERVISOR_H

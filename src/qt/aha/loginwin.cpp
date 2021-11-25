@@ -9,6 +9,7 @@ LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
+    DatabaseHandler::getInstance()->getUserInfo("super1");
 }
 
 LoginWin::~LoginWin()
@@ -21,15 +22,11 @@ void LoginWin::on_pushButton_clicked()
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
 
-    //m_dbh->signUserIn(user, pass);
+    bool signInSuccess = m_dbh->attemptSignIn(user,pass);
 
-    //TODO: This needs to be a real verification of user and pass
-    if(user == "test" && pass == "test")
+    if(signInSuccess)
     {
-        //pass back to parent info needed to log in
-        // TODO: This should pass back the id of the user that is logging in instead of 1
         this->done(1);
-        // this is a test comment!
     }
     else
     {
