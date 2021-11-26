@@ -11,8 +11,6 @@ LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
 
     //this->showMaximized();
     this->setWindowState(Qt::WindowMaximized);
-
-    connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
 }
 
 LoginWin::~LoginWin()
@@ -24,26 +22,36 @@ void LoginWin::on_pushButton_clicked()
 {
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
+    connect(m_dbh,SIGNAL(badLoginInfo()),this,SLOT(handleBadLoginInfo()));
+    connect(m_dbh,SIGNAL(openEmployee(Employee)),this,SLOT(handleOpenEmployee(Employee)));
+    connect(m_dbh, SIGNAL(openSupervisor(Supervisor)),this,SLOT(handleOpenSupervisor(Supervisor)));
 
     bool signInSuccess = m_dbh->attemptSignIn(user,pass);
 
     if(signInSuccess)
     {
-        Supervisor s = m_dbh->getUserInfo(user);
-        s.printToDebug();
-        this->done(1);
+        connect(m_dbh,SIGNAL(openEmployee(Employee)),this,SLOT(handleOpenEmployee(Employee)));
+        connect(m_dbh, SIGNAL(openSupervisor(Supervisor)),this,SLOT(handleOpenSupervisor(Supervisor)));
+        m_dbh->getUserInfo(user);
     }
     else
     {
-        QMessageBox::warning(this,"Login","Username and password combination is not correct.");
+        QMessageBox::warning(this,"Login","Something went wrong");
     }
 }
 
-void LoginWin::loginSuccess()
+void LoginWin::handleBadLoginInfo()
 {
-    QString user = ui->lineEdit_userName->text();
-    QString pass = ui->lineEdit_password->text();
-    emit currentUser(Login(user,pass));
-    this->done(1);
+    QMessageBox::warning(this,"Login","Username and password combination is not correct.");
+}
+
+void LoginWin::handleOpenEmployee(Employee e)
+{
+    this->accept();
+}
+
+void LoginWin::handleOpenSupervisor(Supervisor s)
+{
+    this->accept();
 }
 

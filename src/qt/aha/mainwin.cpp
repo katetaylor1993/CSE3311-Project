@@ -13,6 +13,8 @@ MainWin::MainWin(QWidget *parent)
     DatabaseHandler * dbHandler = DatabaseHandler::getInstance();
     // first, user needs to login
     LoginWin * login = new LoginWin(dbHandler, this);
+
+    //TODO: make connections between database and mainwin for employe and sup login
     m_currentUser = login->exec();
 
     //check that user is valid before launching the window

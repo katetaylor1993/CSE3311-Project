@@ -20,7 +20,9 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void loginSuccess();
+    void handleOpenEmployee(Employee e);
+    void handleOpenSupervisor(Supervisor s);
+    void handleBadLoginInfo();
 
 private:
     Ui::LoginWin *ui;
