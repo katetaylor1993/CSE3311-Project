@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/picture">
+        <file>picture/Aha-Logo.png</file>
+        <file>picture/bar-chart.png</file>
+        <file>picture/clear.png</file>
+        <file>picture/close.png</file>
+        <file>picture/hide.png</file>
+        <file>picture/line-chart.png</file>
+        <file>picture/login-bg.png</file>
+        <file>picture/menu.png</file>
+        <file>picture/pie_chart.png</file>
+        <file>picture/refresh.png</file>
+        <file>picture/resize.png</file>
+    </qresource>
+</RCC>

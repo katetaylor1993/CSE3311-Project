@@ -25,6 +25,7 @@ SOURCES += \
 
 
 HEADERS += \
+    qcustomplot.h \
     databasehandler.h \
     employee.h \
     filters.h \
@@ -47,6 +48,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    pic.qrc
+
     resource.qrc
 
 QMAKE_CXXFLAGS += -std=gnu++11
+
