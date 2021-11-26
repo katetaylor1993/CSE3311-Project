@@ -57,38 +57,35 @@ MainWin::~MainWin()
 
 void MainWin::on_database_button_clicked()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("remotemysql.com");
-    db.setDatabaseName("JfadHzJmgq");
-    db.setUserName("JfadHzJmgq");
-    db.setPassword("mpPExijexc");
+//    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+//    db.setHostName("remotemysql.com");
+//    db.setDatabaseName("JfadHzJmgq");
+//    db.setUserName("JfadHzJmgq");
+//    db.setPassword("mpPExijexc");
 
 
-    if(db.open()){
-        QMessageBox::information(this,"Connection","Databse Connected.");
-    }else{
-        QMessageBox::information(this,"Connection","Cannnot connected to database.");
-    }
-
-    qDebug() << "hi" ;
+//    if(db.open()){
+//        QMessageBox::information(this,"Connection","Databse Connected.");
+//    }else{
+//        QMessageBox::information(this,"Connection","Cannnot connected to database.");
+//    }
 
 
+//    QSqlQuery query;
+//    query.prepare("SELECT emp_username FROM supervises WHERE super_username='super1';");
+//    query.exec();
 
-    QSqlQuery query;
-    query.prepare("SELECT emp_username FROM supervises WHERE super_username='super1';");
-    query.exec();
+//        if(query.size()>0){
+//            while(query.next()){
+//                QString emp_username=query.value(0).toString().toUtf8().constData();
+//                qDebug() <<emp_username;
+//                qDebug() << "/ " ;
 
-        if(query.size()>0){
-            while(query.next()){
-                QString emp_username=query.value(0).toString().toUtf8().constData();
-                qDebug() <<emp_username;
-                qDebug() << "/ " ;
+//            }
 
-            }
+//        }else{
 
-        }else{
-
-        }
+//        }
 
 
 
@@ -209,25 +206,156 @@ void MainWin::on_user_button_clicked()
 {
     ui->setting_stack->setCurrentIndex(0);
 
-//    model =new QSqlTableModel(this);
-//    model->setQuery("SELECT * FROM user");
-//    model->setHeaderData(0, Qt::Horizontal, tr("username"));
-//    model->setHeaderData(1, Qt::Horizontal, tr("password"));
-//    model->setHeaderData(2, Qt::Horizontal, tr("name"));
-//    model->setHeaderData(3, Qt::Horizontal, tr("isAdmin"));
-//    model->setHeaderData(4, Qt::Horizontal, tr("isSupervisor"));
-//    ui->user_table_view->setModel(model);
-//    ui->user_table_view->show();
-
-    model =new QSqlTableModel(this);
-    model->setQuery("SELECT emp_username FROM supervises WHERE super_username='super1'");
-    model->setHeaderData(0, Qt::Horizontal, tr("emp_username"));
-    ui->user_table_view->setModel(model);
+    model1 =new QSqlTableModel(this);
+    model1->setQuery("SELECT * FROM user");
+    model1->setHeaderData(0, Qt::Horizontal, tr("username"));
+    model1->setHeaderData(1, Qt::Horizontal, tr("password"));
+    model1->setHeaderData(2, Qt::Horizontal, tr("name"));
+    model1->setHeaderData(3, Qt::Horizontal, tr("isAdmin"));
+    model1->setHeaderData(4, Qt::Horizontal, tr("isSupervisor"));
+    ui->user_table_view->setModel(model1);
     ui->user_table_view->show();
+
+    model2 =new QSqlTableModel(this);
+    model2->setQuery("SELECT username FROM user");
+    ui->user_list_view->setModel(model2);
+    ui->user_combo_box->setModel(model2);
+
 }
 
 void MainWin::on_category_button_clicked()
 {
     ui->setting_stack->setCurrentIndex(1);
 }
+
+//edit user functions
+void MainWin::on_user_save_button_clicked()
+{
+    QString username,password,name;
+    int  is_admin,is_supervisor;
+    username=ui->username_line_edit->text();
+    password=ui->password_line_edit->text();
+    name=ui->real_name_line_edit->text();
+
+    if(ui->admin_check_box->isChecked()){
+        is_admin=1;
+    }else{
+        is_admin=0;
+    }
+
+    if(ui->supervisor_check_box->isChecked()){
+        is_supervisor=1;
+    }else{
+        is_supervisor=0;
+    }
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO user(username,password,name,is_admin,is_supervisor)" "VALUES (?, ?, ?, ?, ?)");
+    query.addBindValue(username);
+    query.addBindValue(password);
+    query.addBindValue(name);
+    query.addBindValue(is_admin);
+    query.addBindValue(is_supervisor);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Save","New user saved.");
+        }else{
+            QMessageBox::information(this,"Save","No user founded.");
+        }
+
+    }else{
+        QMessageBox::information(this,"Save","Cannnot save to database.");
+    }
+}
+
+
+void MainWin::on_user_update_button_clicked()
+{
+    QSqlQuery query;
+    QString username,password,name;
+    int  is_admin,is_supervisor;
+    username=ui->username_line_edit->text();
+    password=ui->password_line_edit->text();
+    name=ui->real_name_line_edit->text();
+
+    if(ui->admin_check_box->isChecked()){
+        is_admin=1;
+    }else{
+        is_admin=0;
+    }
+
+    if(ui->supervisor_check_box->isChecked()){
+        is_supervisor=1;
+    }else{
+        is_supervisor=0;
+    }
+
+    query.prepare("UPDATE user SET password=:password,name=:name,is_admin=:is_admin,is_supervisor=:is_supervisor WHERE username=:username");
+    query.bindValue(":username",username);
+    query.bindValue(":password",password);
+    query.bindValue(":name",name);
+    query.bindValue(":is_admin",is_admin);
+    query.bindValue(":is_supervisor",is_supervisor);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Update","Updated user.");
+        }else{
+            QMessageBox::information(this,"Update","No user founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Update","Cannnot update database.");
+    }
+}
+
+
+void MainWin::on_user_remove_button_clicked()
+{
+    QSqlQuery query;
+    QString username;
+    username=ui->username_line_edit->text();
+    query.prepare("DELETE FROM user WHERE username = ?");
+    query.addBindValue(username);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Remove","Removed user.");
+        }else{
+            QMessageBox::information(this,"Remove","No user founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Remove","Cannnot remove item in database.");
+    }
+}
+
+
+void MainWin::on_user_combo_box_currentTextChanged(const QString &arg1)
+{
+    QString username=ui->user_combo_box->currentText();
+    QSqlQuery query;
+    qDebug() <<username;
+    query.prepare("SELECT * FROM user WHERE username=:username ");
+    query.bindValue(":username",username);
+    if(query.exec()){
+        while(query.next()){
+            ui->username_line_edit->setText(query.value(0).toString());
+            ui->password_line_edit->setText(query.value(1).toString());
+            ui->real_name_line_edit->setText(query.value(2).toString());
+
+            if(query.value(3).toInt()==1){
+                ui->admin_check_box->setChecked(true);
+            }
+
+            if(query.value(4).toInt()==1){
+                ui->supervisor_check_box->setChecked(true);
+            }
+
+        }
+    }else{
+        QMessageBox::information(this,"Display","Cannnot populate the fields.");
+    }
+
+}
+
 
