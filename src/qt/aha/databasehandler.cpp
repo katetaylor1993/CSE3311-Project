@@ -106,11 +106,13 @@ void DatabaseHandler::connectToDB() //application connect with database
 
     if(!opened){ qDebug() << "remote database not opened"; }
 
-    QFile f = QFile("../URL-categorization-DFE.csv");
-    if(!(f.open(QIODevice::ReadWrite)))
-        qDebug() << "Opening website csv error: "+f.errorString();
+    m_categories = new QFile("../URL-categorization-DFE.csv");
+    if(!(m_categories->open(QIODevice::ReadWrite)))
+        qDebug() << "Opening website csv error: "+m_categories->errorString();
     else
+    {
         qDebug() << "Opened website csv successfully!";
+    }
 }
 
 QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)
