@@ -10,6 +10,7 @@
 #include "record.h"
 #include "supervisor.h"
 
+struct websiteCategory_t { QString wesbite; QString category; };
 class DatabaseHandler : public QObject
 {
     Q_OBJECT
@@ -29,9 +30,11 @@ public:
     ~DatabaseHandler();
 
     void connectToDB();
-    Supervisor getUserInfo(QString username);
+    void getUserInfo(QString username);
     bool attemptSignIn(QString username, QString password);
     QList<Record> getAllRecords(QList<Employee> employees);
+    void updateCategory(QString url, QString cat);
+    QString getCategory(QString website);
 
 
 public slots:
@@ -39,6 +42,9 @@ public slots:
 signals:
     void criticalError();
     void recordsAreReady(QList<Record> records);
+    void openEmployee(Employee e);
+    void openSupervisor(Supervisor s);
+    void badLoginInfo();
 private:
     QString m_username;
     QString m_password;
@@ -46,6 +52,9 @@ private:
     int m_port;
     QSqlDatabase m_db;
     QFile * m_categories;
+    QList<websiteCategory_t> m_catMap;
+
+    void fillCategories();
 
     QList<QString> fetch(QString attr, QString table, QString whereAttr, QString whereVal);
 };
