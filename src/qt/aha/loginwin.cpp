@@ -13,13 +13,6 @@ LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
     this->setWindowState(Qt::WindowMaximized);
 
     connect(m_dbh, SIGNAL(userSignedIn()),this, SLOT(loginSuccess()));
-    Employee one = Employee("Jane Doe",Login("emp1","Password123"));
-    Employee two = Employee("John Doe", Login("emp2","Password123"));
-    QList<Employee> temp;
-    temp.append(one);
-    temp.append(two);
-    m_dbh->getAllRecords(temp);
-
 }
 
 LoginWin::~LoginWin()
@@ -36,6 +29,8 @@ void LoginWin::on_pushButton_clicked()
 
     if(signInSuccess)
     {
+        Supervisor s = m_dbh->getUserInfo(user);
+        s.printToDebug();
         this->done(1);
     }
     else

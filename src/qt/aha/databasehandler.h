@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QtSql/QSqlDatabase>
+#include <QFile>
 
 #include "record.h"
 #include "supervisor.h"
@@ -44,6 +45,7 @@ private:
     QString m_server;
     int m_port;
     QSqlDatabase m_db;
+    QFile * m_categories;
 
     QList<QString> fetch(QString attr, QString table, QString whereAttr, QString whereVal);
 };
