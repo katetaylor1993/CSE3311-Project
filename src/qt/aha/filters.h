@@ -4,12 +4,18 @@
 #include <QDate>
 #include <QList>
 
+#include "record.h"
 #include "employee.h"
 
 class Filters
 {
 public:
     explicit Filters();
+
+    void setStartDte(QDate date);
+    void setEndDate(QDate date);
+
+    QList<Record> filteredRecords;
 
 private:
     QDate m_startDate;
