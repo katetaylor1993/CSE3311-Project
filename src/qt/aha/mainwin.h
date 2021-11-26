@@ -60,12 +60,21 @@ private slots:
 
     void on_category_button_clicked();
 
+    void on_user_save_button_clicked();
+
+    void on_user_update_button_clicked();
+
+    void on_user_remove_button_clicked();
+
+    void on_user_combo_box_currentTextChanged(const QString &arg1);
+
 private:
     Ui::MainWin *ui;
     QPropertyAnimation *animation1;
     QPropertyAnimation *animation2;
     QParallelAnimationGroup* animationGroup;
-    QSqlQueryModel *model;
+    QSqlQueryModel *model1;
+    QSqlQueryModel *model2;
 
     //TODO: Change this to be class with more information about the user
     int m_currentUser;
