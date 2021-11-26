@@ -1,7 +1,7 @@
 #include "databasehandler.h"
 #include "user.h"
 #include "employee.h"
-
+#include "supervisor.h"
 #include <QNetworkRequest>
 #include <QDebug>
 #include <QJsonDocument>
