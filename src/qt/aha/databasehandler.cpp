@@ -75,10 +75,9 @@ QList<Record> DatabaseHandler::getAllRecords(QList<Employee> employees)
         }
         QList<Record> ret;
         QString website, time, date;
-        QSqlQuery wq = QSqlQuery("SELECT website, time, date FROM report WHERE username=\""+e.Username()+"\"",m_db);
-        //QSqlQuery tq = QSqlQuery("SELECT time FROM report WHERE username=\""+e.Username()+"\"",m_db);
-        //QSqlQuery dq = QSqlQuery("SELECT date FROM report WHERE username=\""+e.Username()+"\"",m_db);
-        wq.setForwardOnly(true); //this saves memory and overhead
+        QSqlQuery wq = QSqlQuery("SELECT website, time, date FROM report WHERE username='"+e.Username()+"'",m_db);
+
+        //wq.setForwardOnly(true); //this saves memory and overhead
         while(wq.next())
         {
             website = wq.value(0).toString();
@@ -108,8 +107,8 @@ void DatabaseHandler::connectToDB() //application connect with database
 QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)
 {
     QList<QString> ret;
-    QSqlQuery query = QSqlQuery("SELECT "+attr+" FROM "+table+" WHERE "+whereAttr+"=\""+whereVal+"\"",m_db);
-    query.setForwardOnly(true); //this saves memory and overhead
+    QSqlQuery query = QSqlQuery("SELECT "+attr+" FROM "+table+" WHERE "+whereAttr+"='"+whereVal+"'",m_db);
+    //query.setForwardOnly(true); //this saves memory and overhead
     while(query.next())
     {
         ret.append(query.value(0).toString());
