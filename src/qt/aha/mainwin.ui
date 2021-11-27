@@ -1186,9 +1186,6 @@ QPushButton::hover
                      </widget>
                     </item>
                     <item>
-                     <widget class="QListWidget" name="listWidget"/>
-                    </item>
-                    <item>
                      <widget class="QComboBox" name="employee_combo_box">
                       <property name="minimumSize">
                        <size>
@@ -1402,8 +1399,8 @@ border-radius:opx;
                     <item>
                      <widget class="QPushButton" name="database_button">
                       <property name="icon">
-                       <iconset>
-                        <normaloff>:/pics/picture/refresh.png</normaloff>:/pics/picture/refresh.png</iconset>
+                       <iconset resource="pic.qrc">
+                        <normaloff>:/picture/picture/clear.png</normaloff>:/picture/picture/clear.png</iconset>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -1484,9 +1481,9 @@ border-radius:opx;
                     <number>0</number>
                    </property>
                    <widget class="QWidget" name="bar_page">
-                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                    <layout class="QHBoxLayout" name="horizontalLayout_25">
                      <item>
-                      <widget class="QCustomPlot" name="bar_chart" native="true">
+                      <widget class="QTableView" name="tableView">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
@@ -1494,6 +1491,9 @@ border-radius:opx;
                         </sizepolicy>
                        </property>
                       </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget" native="true"/>
                      </item>
                     </layout>
                    </widget>
@@ -3704,7 +3704,7 @@ border-radius:opx;
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
