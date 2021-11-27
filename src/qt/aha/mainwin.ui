@@ -1493,7 +1493,9 @@ border-radius:opx;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QWidget" name="widget" native="true"/>
+                      <widget class="QFrame" name="horizontalFrame">
+                       <layout class="QHBoxLayout" name="horizontalLayout_27"/>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
