@@ -4,21 +4,26 @@
 #include "databasehandler.h"
 #include <QMessageBox>
 #include <QPixmap>
+#include <QThread>
+#include <QHBoxLayout>
 
 
 MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWin)
+    , ui(new Ui::MainWin),
+      m_supervisor(Supervisor())
 {
-    DatabaseHandler * dbHandler = DatabaseHandler::getInstance();
+    m_dbh = DatabaseHandler::getInstance();
+
+    connect(m_dbh,SIGNAL(loggedIn(QString)),this,SLOT(handleLogin(QString)));
+
     // first, user needs to login
-    LoginWin * login = new LoginWin(dbHandler, this);
+    LoginWin * login = new LoginWin(m_dbh, this);
 
     //TODO: make connections between database and mainwin for employe and sup login
     m_currentUser = login->exec();
 
-    //check that user is valid before launching the window
-    if(m_currentUser == 1)
+    if(m_currentUser==1)
     {
         ui->setupUi(this);
         ui->line_chart->addGraph();
@@ -36,18 +41,31 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart->replot();
         ui->line_chart->update();
 
-
-
-
-
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
+        foreach(Employee e, m_supervisor.m_employees)
+        {
+            this->ui->employee_combo_box->addItem(e.Name());
+        }
+
+        m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
+        m_filters = Filters(m_records);
+
+        QList<QString> websites = m_filters.listWebsites();
+        foreach(QString w, websites)
+        {
+            this->ui->website_combo_box->addItem(w);
+        }
+
+        QList<QString> categories = m_filters.listCategories();
+        foreach(QString c, categories)
+        {
+            this->ui->category_combo_box->addItem(c);
+        }
     }
     else
     {
-        // since this is the top-level window, closing it will cause
-        // app to quit
-        this->close();
+        //TODO: build employee ui and run it here
     }
 }
 
@@ -56,40 +74,18 @@ MainWin::~MainWin()
     delete ui;
 }
 
+void MainWin::handleLogin(QString user)
+{
+    User * thisUser = m_dbh->getUserInfo(user);
+    if(thisUser->isSupervisor())
+    {
+        m_supervisor = *reinterpret_cast<Supervisor *>(thisUser);
+    }
+}
+
 
 void MainWin::on_database_button_clicked()
 {
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-//    db.setHostName("remotemysql.com");
-//    db.setDatabaseName("JfadHzJmgq");
-//    db.setUserName("JfadHzJmgq");
-//    db.setPassword("mpPExijexc");
-
-
-//    if(db.open()){
-//        QMessageBox::information(this,"Connection","Databse Connected.");
-//    }else{
-//        QMessageBox::information(this,"Connection","Cannnot connected to database.");
-//    }
-
-
-//    QSqlQuery query;
-//    query.prepare("SELECT emp_username FROM supervises WHERE super_username='super1';");
-//    query.exec();
-
-//        if(query.size()>0){
-//            while(query.next()){
-//                QString emp_username=query.value(0).toString().toUtf8().constData();
-//                qDebug() <<emp_username;
-//                qDebug() << "/ " ;
-
-//            }
-
-//        }else{
-
-//        }
-
-
 
 
 }

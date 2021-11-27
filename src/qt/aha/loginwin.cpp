@@ -23,20 +23,16 @@ void LoginWin::on_pushButton_clicked()
     QString user = ui->lineEdit_userName->text();
     QString pass = ui->lineEdit_password->text();
     connect(m_dbh,SIGNAL(badLoginInfo()),this,SLOT(handleBadLoginInfo()));
-    connect(m_dbh,SIGNAL(openEmployee(Employee)),this,SLOT(handleOpenEmployee(Employee)));
-    connect(m_dbh, SIGNAL(openSupervisor(Supervisor)),this,SLOT(handleOpenSupervisor(Supervisor)));
 
-    bool signInSuccess = m_dbh->attemptSignIn(user,pass);
+    QString signInSuccess = m_dbh->attemptSignIn(user,pass);
 
-    if(signInSuccess)
+    if(signInSuccess == "supervisor")
     {
-        connect(m_dbh,SIGNAL(openEmployee(Employee)),this,SLOT(handleOpenEmployee(Employee)));
-        connect(m_dbh, SIGNAL(openSupervisor(Supervisor)),this,SLOT(handleOpenSupervisor(Supervisor)));
-        m_dbh->getUserInfo(user);
+        this->done(1);
     }
-    else
+    else if(signInSuccess == "employee")
     {
-        QMessageBox::warning(this,"Login","Something went wrong");
+        this->done(2);
     }
 }
 

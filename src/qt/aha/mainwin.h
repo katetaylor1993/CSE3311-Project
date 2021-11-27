@@ -17,6 +17,11 @@
 #include <QSqlQuery>
 #include <QTextStream>
 
+#include "supervisor.h"
+#include "employee.h"
+#include "databasehandler.h"
+#include "filters.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWin; }
@@ -30,6 +35,7 @@ public:
     MainWin(QWidget *parent = nullptr);
     ~MainWin();
     //void handleButton();
+    QString currentUser;
 
 private slots:
     void on_m_button_clicked();
@@ -68,6 +74,8 @@ private slots:
 
     void on_user_combo_box_currentTextChanged(const QString &arg1);
 
+    void handleLogin(QString user);
+
 private:
     Ui::MainWin *ui;
     QPropertyAnimation *animation1;
@@ -75,6 +83,12 @@ private:
     QParallelAnimationGroup* animationGroup;
     QSqlQueryModel *model1;
     QSqlQueryModel *model2;
+    DatabaseHandler * m_dbh;
+
+    Supervisor m_supervisor;
+    QList<Record> m_records;
+    QList<Record> m_graphData;
+    Filters m_filters;
 
     //TODO: Change this to be class with more information about the user
     int m_currentUser;

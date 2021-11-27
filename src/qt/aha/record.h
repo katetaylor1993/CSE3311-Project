@@ -11,6 +11,7 @@ public:
     QDate Date();
     QString Domain();
     int Seconds();
+    QString User();
     QString Category();
 
 private:

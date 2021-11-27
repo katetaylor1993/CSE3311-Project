@@ -5,6 +5,10 @@ Supervisor::Supervisor(QString name, Login login, bool admin) :
     User(name, Login(&login),true, admin)
     {}
 
+Supervisor::Supervisor() :
+    User("",Login("",""),true,false)
+{}
+
 void Supervisor::printToDebug()
 {
     qDebug() << "PRINTING SUPERVISOR INFO";
