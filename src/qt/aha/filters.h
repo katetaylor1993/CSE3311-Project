@@ -10,17 +10,23 @@
 class Filters
 {
 public:
-    explicit Filters();
+    Filters();
+    explicit Filters(QList<Record> records);
+    Filters(QList<Record> recs, QList<QString> emps, QList<QString> cats, QList<QString> webs);
 
-    void setStartDte(QDate date);
+    void setStartDate(QDate date);
     void setEndDate(QDate date);
 
-    QList<Record> filteredRecords;
+    QList<Record> filteredRecords();
+
+    QList<QString> listWebsites();
+    QList<QString> listCategories();
 
 private:
+    QList<Record> m_allRecords;
     QDate m_startDate;
     QDate m_endDate;
-    QList<Employee> m_employees;
+    QList<QString> m_employees;
     QList<QString> m_categories;
     QList<QString> m_websites;
 };

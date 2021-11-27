@@ -30,8 +30,8 @@ public:
     ~DatabaseHandler();
 
     void connectToDB();
-    void getUserInfo(QString username);
-    bool attemptSignIn(QString username, QString password);
+    User * getUserInfo(QString username);
+    QString attemptSignIn(QString username, QString password);
     QList<Record> getAllRecords(QList<Employee> employees);
     void updateCategory(QString url, QString cat);
     QString getCategory(QString website);
@@ -42,8 +42,7 @@ public slots:
 signals:
     void criticalError();
     void recordsAreReady(QList<Record> records);
-    void openEmployee(Employee e);
-    void openSupervisor(Supervisor s);
+    void loggedIn(QString username);
     void badLoginInfo();
 private:
     QString m_username;
@@ -52,7 +51,7 @@ private:
     int m_port;
     QSqlDatabase m_db;
     QFile * m_categories;
-    QList<websiteCategory_t> m_catMap;
+    QMap<QString, QString> m_catMap;
 
     void fillCategories();
 
