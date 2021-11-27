@@ -1493,7 +1493,7 @@ border-radius:opx;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QFrame" name="horizontalFrame">
+                      <widget class="QFrame" name="bar_frame">
                        <layout class="QHBoxLayout" name="horizontalLayout_27"/>
                       </widget>
                      </item>
@@ -1507,9 +1507,21 @@ border-radius:opx;
                     </layout>
                    </widget>
                    <widget class="QWidget" name="pie_page">
-                    <layout class="QVBoxLayout" name="verticalLayout_11">
+                    <layout class="QHBoxLayout" name="horizontalLayout_28">
                      <item>
-                      <widget class="QCustomPlot" name="pie_chart" native="true"/>
+                      <widget class="QTableView" name="tableView_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="pie_frame">
+                       <layout class="QHBoxLayout" name="horizontalLayout_29"/>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -1561,10 +1573,10 @@ border-radius:opx;
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pie_chart_button">
+                  <widget class="QPushButton" name="line_chart_button">
                    <property name="icon">
-                    <iconset>
-                     <normaloff>picture/pie_chart.png</normaloff>picture/pie_chart.png</iconset>
+                    <iconset resource="pic.qrc">
+                     <normaloff>:/picture/picture/line-chart.png</normaloff>:/picture/picture/line-chart.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -1575,10 +1587,10 @@ border-radius:opx;
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="line_chart_button">
+                  <widget class="QPushButton" name="pie_chart_button">
                    <property name="icon">
-                    <iconset>
-                     <normaloff>picture/line-chart.png</normaloff>picture/line-chart.png</iconset>
+                    <iconset resource="pic.qrc">
+                     <normaloff>:/picture/picture/pie_chart.png</normaloff>:/picture/picture/pie_chart.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>

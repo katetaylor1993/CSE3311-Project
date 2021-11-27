@@ -23,7 +23,11 @@
 #include <QBarSet>
 #include <QBarSeries>
 
-
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
 
 
 QT_BEGIN_NAMESPACE

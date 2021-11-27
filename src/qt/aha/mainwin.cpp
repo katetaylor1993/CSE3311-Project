@@ -49,7 +49,6 @@ MainWin::MainWin(QWidget *parent)
 
         QStringList categories;
         categories << "Jan" << "Feb" << "Mar" << "Apr"<<"May"<< "Jun";
-        categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
         QBarCategoryAxis *axisX = new QBarCategoryAxis();
         axisX->append(categories);
         chart->addAxis(axisX, Qt::AlignBottom);
@@ -65,7 +64,7 @@ MainWin::MainWin(QWidget *parent)
 
         QChartView *chartView=new QChartView(chart);
         chartView->setRenderHint(QPainter::Antialiasing);
-        chartView->setParent(ui->horizontalFrame);
+        chartView->setParent(ui->bar_frame);
 
 
 
@@ -76,22 +75,20 @@ MainWin::MainWin(QWidget *parent)
 
 
 
+//        ui->line_chart->addGraph();
+//        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
+//        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
+//        ui->line_chart->xAxis->setLabel("X");
+//        ui->line_chart->yAxis->setLabel("Y");
+//        ui->line_chart->xAxis->setRange(0,1000);
+//        ui->line_chart->yAxis->setRange(0,1000);
+//        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
 
-
-        ui->line_chart->addGraph();
-        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
-        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
-        ui->line_chart->xAxis->setLabel("X");
-        ui->line_chart->yAxis->setLabel("Y");
-        ui->line_chart->xAxis->setRange(0,1000);
-        ui->line_chart->yAxis->setRange(0,1000);
-        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
-
-        QVector <double> x={1,2,3,4,5},y={0,9,18,5,30};
-        ui->line_chart->graph(0)->setData(x,y);
-        ui->line_chart->rescaleAxes();
-        ui->line_chart->replot();
-        ui->line_chart->update();
+//        QVector <double> x={1,2,3,4,5},y={0,9,18,5,30};
+//        ui->line_chart->graph(0)->setData(x,y);
+//        ui->line_chart->rescaleAxes();
+//        ui->line_chart->replot();
+//        ui->line_chart->update();
 
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
@@ -112,18 +109,7 @@ MainWin::~MainWin()
 
 void MainWin::on_database_button_clicked()
 {
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-//    db.setHostName("remotemysql.com");
-//    db.setDatabaseName("JfadHzJmgq");
-//    db.setUserName("JfadHzJmgq");
-//    db.setPassword("mpPExijexc");
 
-
-//    if(db.open()){
-//        QMessageBox::information(this,"Connection","Databse Connected.");
-//    }else{
-//        QMessageBox::information(this,"Connection","Cannnot connected to database.");
-//    }
 
 
 //    QSqlQuery query;
@@ -234,18 +220,57 @@ void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
 
-
-}
-
-void MainWin::on_pie_chart_button_clicked()
-{
-    ui->plot_stack->setCurrentIndex(1);
 }
 
 void MainWin::on_line_chart_button_clicked()
 {
-    ui->plot_stack->setCurrentIndex(2);
+    ui->plot_stack->setCurrentIndex(1);
 }
+
+
+void MainWin::on_pie_chart_button_clicked()
+{
+    ui->plot_stack->setCurrentIndex(2);
+
+    QString random="Joe";
+    double x=2;
+    QPieSeries *p_series = new QPieSeries();
+    p_series->append("Jane", 1);
+    p_series->append(random,x);
+    p_series->append("Andy", 3);
+    p_series->append("Barbara", 4);
+    p_series->append("Axel", 5);
+
+    QPieSlice *slice0 = p_series->slices().at(0);
+    slice0->setLabelVisible();
+    QPieSlice *slice1 = p_series->slices().at(1);
+    slice1->setExploded(true);
+    slice1->setLabelVisible();
+    slice1->setPen(QPen(Qt::darkGreen, 2));
+    slice1->setBrush(Qt::green);
+    QPieSlice *slice2 = p_series->slices().at(2);
+    slice2->setLabelVisible();
+    QPieSlice *slice3 = p_series->slices().at(3);
+    slice3->setLabelVisible();
+    QPieSlice *slice4 = p_series->slices().at(4);
+    slice4->setLabelVisible();
+
+    QChart *p_chart = new QChart();
+    p_chart->addSeries(p_series);
+    p_chart->setAnimationOptions(QChart::AllAnimations);
+    p_chart->setTitle("Piechart example");
+    p_chart->legend()->hide();
+
+    QChartView *p_chartView = new QChartView(p_chart);
+    p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
+    p_chartView->setRenderHint(QPainter::Antialiasing);
+    p_chartView->setParent(ui->pie_frame);
+}
+
+
+
+
+
 
 
 
