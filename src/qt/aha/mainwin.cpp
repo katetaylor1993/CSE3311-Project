@@ -174,6 +174,8 @@ void MainWin::on_setting_button_clicked()
 void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
+
+
 }
 
 void MainWin::on_pie_chart_button_clicked()
@@ -353,4 +355,16 @@ void MainWin::on_user_combo_box_currentTextChanged(const QString &arg1)
 
 }
 
+
+
+void MainWin::on_employee_combo_box_currentTextChanged(const QString &arg1)
+{
+
+}
+
+
+void MainWin::on_category_combo_box_currentTextChanged(const QString &arg1)
+{
+
+}
 
