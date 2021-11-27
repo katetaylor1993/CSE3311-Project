@@ -12,11 +12,16 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QDebug>
+
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTextStream>
+
 #include <QtCharts>
+#include <QChartView>
+#include <QBarSet>
+#include <QBarSeries>
 
 
 
