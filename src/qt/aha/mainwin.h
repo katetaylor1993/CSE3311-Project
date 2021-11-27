@@ -16,6 +16,9 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTextStream>
+#include <QtCharts>
+
+
 
 
 QT_BEGIN_NAMESPACE
