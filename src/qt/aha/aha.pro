@@ -39,6 +39,7 @@ HEADERS += \
 
 
 FORMS += \
+    employee.ui \
     loginwin.ui \
     mainwin.ui
 
