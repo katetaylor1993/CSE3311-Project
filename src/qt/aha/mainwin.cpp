@@ -34,10 +34,6 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart->replot();
         ui->line_chart->update();
 
-
-
-
-
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
     }
@@ -218,7 +214,6 @@ void MainWin::on_user_button_clicked()
 
     model2 =new QSqlTableModel(this);
     model2->setQuery("SELECT username FROM user");
-    ui->user_list_view->setModel(model2);
     ui->user_combo_box->setModel(model2);
 
 }
@@ -334,7 +329,7 @@ void MainWin::on_user_combo_box_currentTextChanged(const QString &arg1)
 {
     QString username=ui->user_combo_box->currentText();
     QSqlQuery query;
-    qDebug() <<username;
+
     query.prepare("SELECT * FROM user WHERE username=:username ");
     query.bindValue(":username",username);
     if(query.exec()){
