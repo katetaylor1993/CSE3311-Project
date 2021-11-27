@@ -71,6 +71,10 @@ private slots:
 
     void on_user_combo_box_currentTextChanged(const QString &arg1);
 
+    void on_employee_combo_box_currentTextChanged(const QString &arg1);
+
+    void on_category_combo_box_currentTextChanged(const QString &arg1);
+
 private:
     Ui::MainWin *ui;
     QPropertyAnimation *animation1;
