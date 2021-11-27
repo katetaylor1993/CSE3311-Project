@@ -23,22 +23,27 @@ DatabaseHandler::DatabaseHandler(QObject *parent)
 {}
 
 DatabaseHandler::~DatabaseHandler()
-{
-    delete obj;
-}
+{}
 
-bool DatabaseHandler::attemptSignIn(QString username, QString password)
+QString DatabaseHandler::attemptSignIn(QString username, QString password)
 {
     QList<QString> pass = fetch("password","user","username",username);
-    if(pass.isEmpty()) {return false;}
-    if(pass.at(0) == password)
-        getUserInfo(username);
+    if(pass.isEmpty()) {return nullptr;}
+    if(pass.at(0) == password){
+        emit loggedIn(username);
+        if(fetch("is_supervisor","user","username",username).at(0)=="1")
+            return "supervisor";
+        else
+            return "employee";
+    }
     else
+    {
         emit badLoginInfo();
-    return true;
+        return "badLogin";
+    }
 }
 
-void DatabaseHandler::getUserInfo(QString username)
+User * DatabaseHandler::getUserInfo(QString username)
 {
     QString name, password, eName, eUser, ePass;
 
@@ -51,7 +56,7 @@ void DatabaseHandler::getUserInfo(QString username)
             isAdmin=true;
         else
             isAdmin=false;
-        Supervisor s = Supervisor(name, Login(username,password),isAdmin);
+        Supervisor * s = new Supervisor(name, Login(username,password),isAdmin);
 
         // load up with employees
         QList<QString> employees = fetch("emp_username","supervises","Super_username",username);
@@ -61,15 +66,15 @@ void DatabaseHandler::getUserInfo(QString username)
             eUser = fetch("username","user","username",e).at(0);
             ePass = fetch("password","user","username",e).at(0);
             Employee E = Employee(eName,Login(eUser,ePass));
-            s.addEmployee(E);
+            s->addEmployee(E);
         }
-        s.printToDebug();
-        emit openSupervisor(s);
+        s->printToDebug();
+        return dynamic_cast<User *>(s);
     }
     else //if not supervisor, then employee
     {
-        Employee e = Employee(name, Login(username,password));
-        emit openEmployee(e);
+        Employee * e = new Employee(name, Login(username,password));
+        return dynamic_cast<User *>(e);
     }
 }
 
@@ -114,7 +119,7 @@ void DatabaseHandler::connectToDB() //application connect with database
 
     if(!opened){ qDebug() << "remote database not opened"; }
 
-    m_categories = new QFile("../URL-categorization-DFE.csv");
+    m_categories = new QFile("../URL-categorization-DFE.csv",this);
     fillCategories();
 }
 
@@ -140,8 +145,7 @@ void DatabaseHandler::fillCategories()
             // parse the read line into separate pieces(tokens) with "," as the delimiter
             QStringList lineToken = fileLine.split(",");
 
-            websiteCategory_t wc = {lineToken.at(0), lineToken.at(1)};
-            m_catMap.push_back(wc);
+            m_catMap.insert(lineToken.at(0),lineToken.at(1));
 
             lineindex++;
         }
@@ -157,15 +161,8 @@ QString DatabaseHandler::getCategory(QString website)
 {
     if(!m_catMap.isEmpty())
     {
-        foreach(websiteCategory_t wc,m_catMap)
-        {
-            if(wc.wesbite == website)
-            {
-                return wc.category;
-            }
-        }
-        qDebug() << "website not found in category map";
-        return nullptr;
+        QString ret = m_catMap.value(website.remove("www."));
+        return ret;
     }
     else
     {
@@ -181,7 +178,7 @@ QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString where
     //query.setForwardOnly(true); //this saves memory and overhead
     //query.prepare("SELECT "+attr+" FROM "+table+" WHERE "+whereAttr+"='"+whereVal+"'");
 
-    qDebug() << query.lastError().text();
+    //qDebug() << query.lastError().text();
 
     while(query.next())
     {

@@ -16,3 +16,4 @@ QDate Record::Date() {return m_date;}
 int Record::Seconds() {return m_seconds;}
 QString Record::Domain() {return m_domain;}
 QString Record::Category() {return m_domainCategory;}
+QString Record::User() {return m_user;}
