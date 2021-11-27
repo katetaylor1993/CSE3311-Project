@@ -167,7 +167,7 @@ QLineEdit
 QListView
 {
 	background-color: #0077B6;
-	color: #fff;
+	color: #000000;
 	font-size: 14px;
 	font-weight: bold;
 	show-decoration-selected: 0;
@@ -304,6 +304,7 @@ QTableView
 {
     background-color: #fff;
 	border: 1px solid gray;
+font-weight: bold;
     color: #1D3557;
     gridline-color: gray;
     outline : 0;
@@ -1398,8 +1399,8 @@ border-radius:opx;
                     <item>
                      <widget class="QPushButton" name="database_button">
                       <property name="icon">
-                       <iconset>
-                        <normaloff>:/pics/picture/refresh.png</normaloff>:/pics/picture/refresh.png</iconset>
+                       <iconset resource="pic.qrc">
+                        <normaloff>:/picture/picture/clear.png</normaloff>:/picture/picture/clear.png</iconset>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -1480,9 +1481,9 @@ border-radius:opx;
                     <number>0</number>
                    </property>
                    <widget class="QWidget" name="bar_page">
-                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                    <layout class="QHBoxLayout" name="horizontalLayout_25">
                      <item>
-                      <widget class="QCustomPlot" name="bar_chart" native="true">
+                      <widget class="QTableView" name="tableView">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
@@ -1490,6 +1491,9 @@ border-radius:opx;
                         </sizepolicy>
                        </property>
                       </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget" native="true"/>
                      </item>
                     </layout>
                    </widget>
@@ -2056,12 +2060,12 @@ border-radius:opx;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QLineEdit" name="lineEdit_7">
-                                  <property name="styleSheet">
-                                   <string notr="true">	border-top-right-radius: 10px;
-	border-top-left-radius:10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius:10px;</string>
+                                 <widget class="QComboBox" name="comboBox">
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>0</width>
+                                    <height>30</height>
+                                   </size>
                                   </property>
                                  </widget>
                                 </item>
@@ -3253,25 +3257,17 @@ border-radius:opx;
                                </spacer>
                               </item>
                               <item>
-                               <widget class="QListView" name="user_list_view">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
+                               <spacer name="verticalSpacer_20">
+                                <property name="orientation">
+                                 <enum>Qt::Vertical</enum>
                                 </property>
-                                <property name="maximumSize">
+                                <property name="sizeHint" stdset="0">
                                  <size>
-                                  <width>200</width>
-                                  <height>16777215</height>
+                                  <width>20</width>
+                                  <height>40</height>
                                  </size>
                                 </property>
-                                <property name="styleSheet">
-                                 <string notr="true">background:transparent;
-border: 1px solid;
-color: #000000;</string>
-                                </property>
-                               </widget>
+                               </spacer>
                               </item>
                              </layout>
                             </widget>
@@ -3510,17 +3506,36 @@ color: #000000;</string>
                             </spacer>
                            </item>
                            <item>
-                            <widget class="QPushButton" name="pushButton_6">
-                             <property name="font">
-                              <font>
-                               <pointsize>-1</pointsize>
-                               <weight>75</weight>
-                               <bold>true</bold>
-                              </font>
+                            <widget class="QFrame" name="frame_5">
+                             <property name="frameShape">
+                              <enum>QFrame::StyledPanel</enum>
                              </property>
-                             <property name="text">
-                              <string>Add New</string>
+                             <property name="frameShadow">
+                              <enum>QFrame::Raised</enum>
                              </property>
+                             <layout class="QHBoxLayout" name="horizontalLayout_24">
+                              <item>
+                               <widget class="QPushButton" name="pushButton_6">
+                                <property name="font">
+                                 <font>
+                                  <pointsize>-1</pointsize>
+                                  <weight>75</weight>
+                                  <bold>true</bold>
+                                 </font>
+                                </property>
+                                <property name="text">
+                                 <string>Add New</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QPushButton" name="pushButton_7">
+                                <property name="text">
+                                 <string>Remove</string>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
                             </widget>
                            </item>
                            <item>
@@ -3543,38 +3558,6 @@ color: #000000;</string>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QFrame" name="frame_17">
-                          <property name="styleSheet">
-                           <string notr="true">QFrame
-{
-	background: #ADE2FF;
-	border-radius: 15px;
-}</string>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QVBoxLayout" name="verticalLayout_40">
-                           <item>
-                            <widget class="QLabel" name="label_17">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>&lt;h2&gt; Category User &lt;/h2&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                        <item>
                          <widget class="QFrame" name="frame_18">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -3592,91 +3575,6 @@ color: #000000;</string>
                            <property name="leftMargin">
                             <number>0</number>
                            </property>
-                           <item>
-                            <spacer name="verticalSpacer_13">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Fixed</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>10</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item>
-                            <layout class="QVBoxLayout" name="verticalLayout_42">
-                             <item>
-                              <widget class="QLabel" name="label_18">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="text">
-                                <string>&lt;h3&gt;Name&lt;/h3&gt;</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QLineEdit" name="lineEdit_8">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">	border-top-right-radius: 10px;
-	border-top-left-radius:10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius:10px;</string>
-                               </property>
-                              </widget>
-                             </item>
-                            </layout>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_16">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeType">
-                              <enum>QSizePolicy::Fixed</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_7">
-                             <property name="text">
-                              <string>Remove</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="verticalSpacer_17">
-                             <property name="orientation">
-                              <enum>Qt::Vertical</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>20</width>
-                               <height>40</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
                           </layout>
                          </widget>
                         </item>

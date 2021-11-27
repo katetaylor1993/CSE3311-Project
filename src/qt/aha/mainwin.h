@@ -16,6 +16,9 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTextStream>
+#include <QtCharts>
+
+
 
 #include "supervisor.h"
 #include "employee.h"
@@ -75,6 +78,10 @@ private slots:
     void on_user_combo_box_currentTextChanged(const QString &arg1);
 
     void handleLogin(QString user);
+
+    void on_employee_combo_box_currentTextChanged(const QString &arg1);
+
+    void on_category_combo_box_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWin *ui;
