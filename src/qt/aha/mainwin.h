@@ -16,6 +16,9 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTextStream>
+#include <QtCharts>
+
+
 
 
 QT_BEGIN_NAMESPACE
@@ -67,6 +70,10 @@ private slots:
     void on_user_remove_button_clicked();
 
     void on_user_combo_box_currentTextChanged(const QString &arg1);
+
+    void on_employee_combo_box_currentTextChanged(const QString &arg1);
+
+    void on_category_combo_box_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWin *ui;
