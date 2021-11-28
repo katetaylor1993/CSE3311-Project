@@ -2,6 +2,8 @@
 #include "ui_mainwin.h"
 #include "loginwin.h"
 #include "databasehandler.h"
+#include "employee_window.h"
+
 #include <QMessageBox>
 #include <QPixmap>
 #include <QThread>
@@ -28,26 +30,112 @@ MainWin::MainWin(QWidget *parent)
     if(m_currentUser==1)
     {
         ui->setupUi(this);
-        ui->line_chart->addGraph();
-        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
-        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
-        ui->line_chart->xAxis->setLabel("X");
-        ui->line_chart->yAxis->setLabel("Y");
-        ui->line_chart->xAxis->setRange(0,1000);
-        ui->line_chart->yAxis->setRange(0,1000);
-        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
 
-        QVector <double> x={1,2,3,4,5},y={0,9,18,5,30};
-        ui->line_chart->graph(0)->setData(x,y);
-        ui->line_chart->rescaleAxes();
-        ui->line_chart->replot();
-        ui->line_chart->update();
+
+        QBarSet *set0 = new QBarSet("Bob");
+        QBarSet *set1 = new QBarSet("Tom");
+        QBarSet *set2 = new QBarSet("John");
+        QBarSet *set3 = new QBarSet("Doe");
+        QBarSet *set4 = new QBarSet("Ahmad");
+
+        *set0 << 1 << 2 << 3 << 4 << 5 << 6;
+        *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+        *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+        *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+        *set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+        QBarSeries *series= new QBarSeries();
+        series->append(set0);
+        series->append(set1);
+        series->append(set2);
+        series->append(set3);
+        series->append(set4);
+
+        QChart *chart=new QChart();
+        chart->addSeries(series);
+        chart->setTitle("Bar Chart");
+        chart->setAnimationOptions(QChart::SeriesAnimations);
+
+        QStringList type;
+        type << "Jan" << "Feb" << "Mar" << "Apr"<<"May"<< "Jun";
+        QBarCategoryAxis *axisX = new QBarCategoryAxis();
+        axisX->append(type);
+        chart->addAxis(axisX, Qt::AlignBottom);
+        series->attachAxis(axisX);
+
+        QValueAxis *axisY = new QValueAxis();
+        axisY->setRange(0,15);
+        chart->addAxis(axisY, Qt::AlignLeft);
+        series->attachAxis(axisY);
+
+        chart->legend()->setVisible(true);
+        chart->legend()->setAlignment(Qt::AlignBottom);
+
+        QChartView *chartView=new QChartView(chart);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        chartView->setParent(ui->bar_frame);
+
+
+
+        QString random="Joe";
+        double x=2;
+        p_series = new QPieSeries(this);
+        p_series->append("Jane", 1);
+        p_series->append(random,x);
+        p_series->append("Andy", 3);
+        p_series->append("Barbara", 4);
+        p_series->append("Axel", 5);
+
+        QPieSlice *slice0 = p_series->slices().at(0);
+        slice0->setLabelVisible();
+        QPieSlice *slice1 = p_series->slices().at(1);
+        slice1->setExploded(true);
+        slice1->setLabelVisible();
+        slice1->setPen(QPen(Qt::darkGreen, 2));
+        slice1->setBrush(Qt::green);
+        QPieSlice *slice2 = p_series->slices().at(2);
+        slice2->setLabelVisible();
+        QPieSlice *slice3 = p_series->slices().at(3);
+        slice3->setLabelVisible();
+        QPieSlice *slice4 = p_series->slices().at(4);
+        slice4->setLabelVisible();
+
+        p_chart = new QChart();
+        p_chart->addSeries(p_series);
+        p_chart->setAnimationOptions(QChart::AllAnimations);
+        p_chart->setTitle("Piechart example");
+        p_chart->legend()->hide();
+
+        p_chartView = new QChartView(p_chart);
+        p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
+        p_chartView->setRenderHint(QPainter::Antialiasing);
+        p_chartView->setParent(ui->pie_frame);
+
+
+
+
+
+
+//        ui->line_chart->addGraph();
+//        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
+//        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
+//        ui->line_chart->xAxis->setLabel("X");
+//        ui->line_chart->yAxis->setLabel("Y");
+//        ui->line_chart->xAxis->setRange(0,1000);
+//        ui->line_chart->yAxis->setRange(0,1000);
+//        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
+
+//        QVector <double> x={1,2,3,4,5},y={0,9,18,5,30};
+//        ui->line_chart->graph(0)->setData(x,y);
+//        ui->line_chart->rescaleAxes();
+//        ui->line_chart->replot();
+//        ui->line_chart->update();
 
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
         foreach(Employee e, m_supervisor.m_employees)
         {
-            this->ui->employee_combo_box->addItem(e.Name());
+            this->ui->e_employee_combo_box->addItem(e.Name());
         }
 
         m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
@@ -57,6 +145,7 @@ MainWin::MainWin(QWidget *parent)
         foreach(QString w, websites)
         {
             this->ui->website_combo_box->addItem(w);
+            this->ui->e_website_combo_box->addItem(w);
         }
 
         QList<QString> categories = m_filters.listCategories();
@@ -67,7 +156,10 @@ MainWin::MainWin(QWidget *parent)
     }
     else
     {
-        //TODO: build employee ui and run it here
+        hide();
+        employee_window employee_window;
+        employee_window.show();
+
     }
 }
 
@@ -84,6 +176,7 @@ void MainWin::handleLogin(QString user)
         m_supervisor = *reinterpret_cast<Supervisor *>(thisUser);
     }
 }
+
 
 
 void MainWin::on_database_button_clicked()
@@ -145,8 +238,13 @@ void MainWin::on_resize_button_clicked(bool checked)
     else{
         this->showMaximized();
     }
-
 }
+
+void MainWin::on_close_button_clicked()
+{
+    this->close();
+}
+
 
 
 //ui stack functions for buttons in the menu
@@ -179,26 +277,36 @@ void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
 
+    p_model =new QSqlTableModel(this);
+    p_model->setQuery("SELECT * FROM category");
+    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
+    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
 
-}
+    ui->pie_chart_table_view->setModel(p_model);
+    ui->pie_chart_table_view->show();
 
-void MainWin::on_pie_chart_button_clicked()
-{
-    ui->plot_stack->setCurrentIndex(1);
 }
 
 void MainWin::on_line_chart_button_clicked()
 {
-    ui->plot_stack->setCurrentIndex(2);
+    ui->plot_stack->setCurrentIndex(1);
 }
 
 
-
-
-void MainWin::on_close_button_clicked()
+void MainWin::on_pie_chart_button_clicked()
 {
-    this->close();
+    ui->plot_stack->setCurrentIndex(2);
+
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -370,5 +478,28 @@ void MainWin::on_employee_combo_box_currentTextChanged(const QString &arg1)
 void MainWin::on_category_combo_box_currentTextChanged(const QString &arg1)
 {
 
+}
+
+
+
+//employee ui buttons
+void MainWin::on_e_bar_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(0);
+}
+
+void MainWin::on_e_line_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(1);
+}
+
+void MainWin::on_e_pie_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(2);
+}
+
+void MainWin::on_upload_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(3);
 }
 

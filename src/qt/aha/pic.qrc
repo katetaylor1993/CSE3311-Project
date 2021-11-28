@@ -11,5 +11,7 @@
         <file>picture/pie_chart.png</file>
         <file>picture/refresh.png</file>
         <file>picture/resize.png</file>
+        <file>picture/load.png</file>
+        <file>picture/go.png</file>
     </qresource>
 </RCC>
