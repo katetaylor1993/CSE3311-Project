@@ -117,6 +117,7 @@ private:
     DatabaseHandler *m_dbh;
 
     Supervisor m_supervisor;
+    Employee m_employee;
     QList<Record> m_records;
     QList<Record> m_graphData;
     Filters m_filters;

@@ -1,11 +1,13 @@
 #include "employee_window.h"
 #include "ui_employee_window.h"
+#include "databasehandler.h"
 #include <QFileDialog>
 #include <QMessageBox>
 
-employee_window::employee_window(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::employee_window)
+employee_window::employee_window(Employee e, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::employee_window),
+    m_employee{e}
 {
     ui->setupUi(this);
 }
@@ -25,7 +27,11 @@ void employee_window::on_browse_button_clicked()
 
 void employee_window::on_OK_button_clicked()
 {
-
+    int ret = DatabaseHandler::getInstance()->exportData(ui->file_name_line_edit->text(),m_employee.Username());
+    if(ret == 1)
+    {
+        ui->file_name_line_edit->setText("There was an issue with file.");
+    }
 }
 
 //header navigation functions

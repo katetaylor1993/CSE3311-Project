@@ -1,18 +1,19 @@
 #ifndef EMPLOYEE_WINDOW_H
 #define EMPLOYEE_WINDOW_H
 
-#include <QMainWindow>
+#include <QDialog>
+#include "employee.h"
 
 namespace Ui {
 class employee_window;
 }
 
-class employee_window : public QMainWindow
+class employee_window : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit employee_window(QWidget *parent = nullptr);
+    explicit employee_window(Employee e, QWidget *parent = nullptr);
     ~employee_window();
 
 private slots:
@@ -28,6 +29,7 @@ private slots:
 
 private:
     Ui::employee_window *ui;
+    Employee m_employee;
 };
 
 #endif // EMPLOYEE_WINDOW_H

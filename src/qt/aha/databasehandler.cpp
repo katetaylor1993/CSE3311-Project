@@ -181,8 +181,10 @@ int DatabaseHandler::exportData(QString filename, QString employeeName)
     QFile file = QFile(filename);
     if(!(file.open(QIODevice::ReadOnly)))
         return 1;
+
     int lineindex = 0;                     // file line counter
     QTextStream in(&file);                 // read to text stream
+
     QSqlQuery q = QSqlQuery(m_db);
     while (!in.atEnd())
     {
@@ -201,6 +203,7 @@ int DatabaseHandler::exportData(QString filename, QString employeeName)
         QString qstr = QString("INSERT INTO report (username, website, date, time) "
                                "VALUES ('"+employeeName+"','"+lineToken[0]+"', '"+dateStr+"', "+lineToken[2]+
                 ") ON DUPLICATE KEY UPDATE time="+lineToken[2]+"");
+
         q.prepare(qstr);
         q.exec();
         //qDebug() << q.lastError().databaseText();
