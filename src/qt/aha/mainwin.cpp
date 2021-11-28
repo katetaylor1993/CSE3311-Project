@@ -31,7 +31,7 @@ MainWin::MainWin(QWidget *parent)
     {
         ui->setupUi(this);
 
-
+        //barchart
         QBarSet *set0 = new QBarSet("Bob");
         QBarSet *set1 = new QBarSet("Tom");
         QBarSet *set2 = new QBarSet("John");
@@ -74,9 +74,10 @@ MainWin::MainWin(QWidget *parent)
         QChartView *chartView=new QChartView(chart);
         chartView->setRenderHint(QPainter::Antialiasing);
         chartView->setParent(ui->bar_frame);
+        //chartView->setParent(ui->e_bar_table_view);
 
 
-
+        //pie chart
         QString random="Joe";
         double x=2;
         p_series = new QPieSeries(this);
@@ -110,26 +111,24 @@ MainWin::MainWin(QWidget *parent)
         p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
         p_chartView->setRenderHint(QPainter::Antialiasing);
         p_chartView->setParent(ui->pie_frame);
+        //p_chartView->setParent(ui->e_pie_table_view);
 
+        //line chart
+        ui->line_chart->addGraph();
+        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
+        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
+        ui->line_chart->xAxis->setLabel("X");
+        ui->line_chart->yAxis->setLabel("Y");
+        ui->line_chart->xAxis->setRange(0,1000);
+        ui->line_chart->yAxis->setRange(0,1000);
+        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
 
+        QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
+        ui->line_chart->graph(0)->setData(dataX,dataY);
+        ui->line_chart->rescaleAxes();
+        ui->line_chart->replot();
+        ui->line_chart->update();
 
-
-
-
-//        ui->line_chart->addGraph();
-//        ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
-//        ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
-//        ui->line_chart->xAxis->setLabel("X");
-//        ui->line_chart->yAxis->setLabel("Y");
-//        ui->line_chart->xAxis->setRange(0,1000);
-//        ui->line_chart->yAxis->setRange(0,1000);
-//        ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
-
-//        QVector <double> x={1,2,3,4,5},y={0,9,18,5,30};
-//        ui->line_chart->graph(0)->setData(x,y);
-//        ui->line_chart->rescaleAxes();
-//        ui->line_chart->replot();
-//        ui->line_chart->update();
 
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
@@ -146,12 +145,15 @@ MainWin::MainWin(QWidget *parent)
         {
             this->ui->website_combo_box->addItem(w);
             this->ui->e_website_combo_box->addItem(w);
+            this->ui->domain_combo_box->addItem(w);
         }
 
         QList<QString> categories = m_filters.listCategories();
         foreach(QString c, categories)
         {
             this->ui->category_combo_box->addItem(c);
+            this->ui->e_category_combo_box->addItem(c);
+            this->ui->w_category_combo_box->addItem(c);
         }
     }
     else
@@ -277,13 +279,16 @@ void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
 
-    p_model =new QSqlTableModel(this);
-    p_model->setQuery("SELECT * FROM category");
-    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
-    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
+    b_model =new QSqlTableModel(this);
+    b_model->setQuery("SELECT * FROM report");
+    b_model->setHeaderData(0, Qt::Horizontal, tr("username"));
+    b_model->setHeaderData(1, Qt::Horizontal, tr("website"));
+    b_model->setHeaderData(2, Qt::Horizontal, tr("time"));
+    b_model->setHeaderData(3, Qt::Horizontal, tr("date"));
 
-    ui->pie_chart_table_view->setModel(p_model);
-    ui->pie_chart_table_view->show();
+    ui->bar_chart_table_view->setModel(b_model);
+    ui->bar_chart_table_view->show();
+
 
 }
 
@@ -296,6 +301,14 @@ void MainWin::on_line_chart_button_clicked()
 void MainWin::on_pie_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(2);
+
+    p_model =new QSqlTableModel(this);
+    p_model->setQuery("SELECT * FROM category");
+    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
+    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
+
+    ui->pie_chart_table_view->setModel(p_model);
+    ui->pie_chart_table_view->show();
 
 }
 
@@ -501,5 +514,19 @@ void MainWin::on_e_pie_chart_button_clicked()
 void MainWin::on_upload_button_clicked()
 {
     ui->e_plot_stack->setCurrentIndex(3);
+}
+
+
+void MainWin::on_browse_button_clicked()
+{
+    QString filter ="All Filer (*.*)";
+    QString file_name=QFileDialog::getOpenFileName(this,"Open a file","C://",filter);
+    ui->file_name_line_edit->setText(file_name);
+}
+
+
+void MainWin::on_OK_button_clicked()
+{
+
 }
 
