@@ -1,6 +1,9 @@
 #include "loginwin.h"
 #include "ui_loginwin.h"
 #include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 LoginWin::LoginWin(DatabaseHandler * dbh, QWidget *parent) :
     QDialog(parent),
