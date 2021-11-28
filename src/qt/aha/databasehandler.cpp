@@ -174,45 +174,39 @@ QString DatabaseHandler::getCategory(QString website)
     }
 }
 
-exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
+int DatabaseHandler::exportData(QString filename, QString employeeName)
 {
     if(!filename.contains(".csv"))
-        return INVALID_FILE;
+        return 1;
     QFile file = QFile(filename);
     if(!(file.open(QIODevice::ReadOnly)))
-        return OPEN_FILE;
-
+        return 1;
     int lineindex = 0;                     // file line counter
     QTextStream in(&file);                 // read to text stream
-
+    QSqlQuery q = QSqlQuery(m_db);
     while (!in.atEnd())
     {
         // read one line from textstream(separated by "\n")
         QString fileLine = in.readLine();
-
         //skip the first line
         if(lineindex==0)
         {
             lineindex++;
             continue;
         }
-
         // parse the read line into separate pieces(tokens) with "," as the delimiter
         QStringList lineToken = fileLine.split(",");
         QDate date = QDate::fromString(lineToken[1],"M/d/yyyy");
         QString dateStr = date.toString("yyyy-MM-dd");
-
         QString qstr = QString("INSERT INTO report (username, website, date, time) "
                                "VALUES ('"+employeeName+"','"+lineToken[0]+"', '"+dateStr+"', "+lineToken[2]+
                 ") ON DUPLICATE KEY UPDATE time="+lineToken[2]+"");
-
-        QSqlQuery q = QSqlQuery(m_db);
         q.prepare(qstr);
         q.exec();
-        qDebug() << q.lastError().databaseText();
+        //qDebug() << q.lastError().databaseText();
         //qDebug() << qstr;
     }
-    return NO_ERROR;
+    return 0;
 }
 
 QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)
