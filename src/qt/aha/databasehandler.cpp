@@ -185,6 +185,7 @@ exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
     int lineindex = 0;                     // file line counter
     QTextStream in(&file);                 // read to text stream
 
+    QSqlQuery q = QSqlQuery(m_db);
     while (!in.atEnd())
     {
         // read one line from textstream(separated by "\n")
@@ -206,10 +207,9 @@ exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
                                "VALUES ('"+employeeName+"','"+lineToken[0]+"', '"+dateStr+"', "+lineToken[2]+
                 ") ON DUPLICATE KEY UPDATE time="+lineToken[2]+"");
 
-        QSqlQuery q = QSqlQuery(m_db);
         q.prepare(qstr);
         q.exec();
-        qDebug() << q.lastError().databaseText();
+        //qDebug() << q.lastError().databaseText();
         //qDebug() << qstr;
     }
     return NO_ERROR;
