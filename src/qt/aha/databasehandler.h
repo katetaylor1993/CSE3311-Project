@@ -10,7 +10,9 @@
 #include "record.h"
 #include "supervisor.h"
 
-//enum class exportErr { NO_ERROR, INVALID_FILE, OPEN_FILE, DATABASE };
+
+//enum exportErr { NO_ERROR, INVALID_FILE, OPEN_FILE, DATABASE };
+
 
 class DatabaseHandler : public QObject
 {

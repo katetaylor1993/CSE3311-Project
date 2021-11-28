@@ -5749,7 +5749,7 @@ QPointF QCPLabelPainterPrivate::getAnchorPos(const QPointF &tickPos)
     {
       switch (mAnchorSide)
       {
-      case asLeft:   { return tickPos+QPointF(mPadding, 0); break; }
+      case asLeft:     return tickPos+QPointF(mPadding, 0);
         case asRight:  return tickPos+QPointF(-mPadding, 0);
         case asTop:    return tickPos+QPointF(0, mPadding);
         case asBottom: return tickPos+QPointF(0, -mPadding);
