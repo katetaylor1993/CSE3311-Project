@@ -2,6 +2,8 @@
 #include "ui_mainwin.h"
 #include "loginwin.h"
 #include "databasehandler.h"
+#include "employee_window.h"
+
 #include <QMessageBox>
 #include <QPixmap>
 #include <QThread>
@@ -52,10 +54,10 @@ MainWin::MainWin(QWidget *parent)
         chart->setTitle("Bar Chart");
         chart->setAnimationOptions(QChart::SeriesAnimations);
 
-        QStringList categories;
-        categories << "Jan" << "Feb" << "Mar" << "Apr"<<"May"<< "Jun";
+        QStringList type;
+        type << "Jan" << "Feb" << "Mar" << "Apr"<<"May"<< "Jun";
         QBarCategoryAxis *axisX = new QBarCategoryAxis();
-        axisX->append(categories);
+        axisX->append(type);
         chart->addAxis(axisX, Qt::AlignBottom);
         series->attachAxis(axisX);
 
@@ -73,7 +75,39 @@ MainWin::MainWin(QWidget *parent)
 
 
 
+        QString random="Joe";
+        double x=2;
+        p_series = new QPieSeries(this);
+        p_series->append("Jane", 1);
+        p_series->append(random,x);
+        p_series->append("Andy", 3);
+        p_series->append("Barbara", 4);
+        p_series->append("Axel", 5);
 
+        QPieSlice *slice0 = p_series->slices().at(0);
+        slice0->setLabelVisible();
+        QPieSlice *slice1 = p_series->slices().at(1);
+        slice1->setExploded(true);
+        slice1->setLabelVisible();
+        slice1->setPen(QPen(Qt::darkGreen, 2));
+        slice1->setBrush(Qt::green);
+        QPieSlice *slice2 = p_series->slices().at(2);
+        slice2->setLabelVisible();
+        QPieSlice *slice3 = p_series->slices().at(3);
+        slice3->setLabelVisible();
+        QPieSlice *slice4 = p_series->slices().at(4);
+        slice4->setLabelVisible();
+
+        p_chart = new QChart();
+        p_chart->addSeries(p_series);
+        p_chart->setAnimationOptions(QChart::AllAnimations);
+        p_chart->setTitle("Piechart example");
+        p_chart->legend()->hide();
+
+        p_chartView = new QChartView(p_chart);
+        p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
+        p_chartView->setRenderHint(QPainter::Antialiasing);
+        p_chartView->setParent(ui->pie_frame);
 
 
 
@@ -119,7 +153,10 @@ MainWin::MainWin(QWidget *parent)
     }
     else
     {
-        //TODO: build employee ui and run it here
+        hide();
+        employee_window employee_window;
+        employee_window.show();
+
     }
 }
 
@@ -198,8 +235,13 @@ void MainWin::on_resize_button_clicked(bool checked)
     else{
         this->showMaximized();
     }
-
 }
+
+void MainWin::on_close_button_clicked()
+{
+    this->close();
+}
+
 
 
 //ui stack functions for buttons in the menu
@@ -231,7 +273,6 @@ void MainWin::on_setting_button_clicked()
 void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
-
 }
 
 void MainWin::on_line_chart_button_clicked()
@@ -244,39 +285,6 @@ void MainWin::on_pie_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(2);
 
-    QString random="Joe";
-    double x=2;
-    QPieSeries *p_series = new QPieSeries();
-    p_series->append("Jane", 1);
-    p_series->append(random,x);
-    p_series->append("Andy", 3);
-    p_series->append("Barbara", 4);
-    p_series->append("Axel", 5);
-
-    QPieSlice *slice0 = p_series->slices().at(0);
-    slice0->setLabelVisible();
-    QPieSlice *slice1 = p_series->slices().at(1);
-    slice1->setExploded(true);
-    slice1->setLabelVisible();
-    slice1->setPen(QPen(Qt::darkGreen, 2));
-    slice1->setBrush(Qt::green);
-    QPieSlice *slice2 = p_series->slices().at(2);
-    slice2->setLabelVisible();
-    QPieSlice *slice3 = p_series->slices().at(3);
-    slice3->setLabelVisible();
-    QPieSlice *slice4 = p_series->slices().at(4);
-    slice4->setLabelVisible();
-
-    QChart *p_chart = new QChart();
-    p_chart->addSeries(p_series);
-    p_chart->setAnimationOptions(QChart::AllAnimations);
-    p_chart->setTitle("Piechart example");
-    p_chart->legend()->hide();
-
-    QChartView *p_chartView = new QChartView(p_chart);
-    p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
-    p_chartView->setRenderHint(QPainter::Antialiasing);
-    p_chartView->setParent(ui->pie_frame);
 }
 
 
@@ -287,10 +295,6 @@ void MainWin::on_pie_chart_button_clicked()
 
 
 
-void MainWin::on_close_button_clicked()
-{
-    this->close();
-}
 
 
 
