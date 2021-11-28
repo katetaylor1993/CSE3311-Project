@@ -174,13 +174,13 @@ QString DatabaseHandler::getCategory(QString website)
     }
 }
 
-exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
+int DatabaseHandler::exportData(QString filename, QString employeeName)
 {
     if(!filename.contains(".csv"))
-        return INVALID_FILE;
+        return 1;
     QFile file = QFile(filename);
     if(!(file.open(QIODevice::ReadOnly)))
-        return OPEN_FILE;
+        return 1;
 
     int lineindex = 0;                     // file line counter
     QTextStream in(&file);                 // read to text stream
@@ -212,7 +212,7 @@ exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
         //qDebug() << q.lastError().databaseText();
         //qDebug() << qstr;
     }
-    return NO_ERROR;
+    return 0;
 }
 
 QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)

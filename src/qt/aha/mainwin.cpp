@@ -13,13 +13,14 @@
 MainWin::MainWin(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWin),
-      m_supervisor(Supervisor())
+      m_supervisor(Supervisor()),
+      m_employee(Employee())
 {
     m_dbh = DatabaseHandler::getInstance();
 
     connect(m_dbh,SIGNAL(loggedIn(QString)),this,SLOT(handleLogin(QString)));
 
-    m_dbh->exportData("C:\\Users\\kathe\\Downloads\\domains.csv","emp4");
+    //m_dbh->exportData("C:\\Users\\kathe\\Downloads\\domains.csv","emp4");
 
     // first, user needs to login
     LoginWin * login = new LoginWin(m_dbh, this);
@@ -31,6 +32,8 @@ MainWin::MainWin(QWidget *parent)
     {
         ui->setupUi(this);
 
+        m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
+        m_filters = Filters(m_records);
 
         QBarSet *set0 = new QBarSet("Bob");
         QBarSet *set1 = new QBarSet("Tom");
@@ -75,11 +78,15 @@ MainWin::MainWin(QWidget *parent)
         chartView->setRenderHint(QPainter::Antialiasing);
         chartView->setParent(ui->bar_frame);
 
-
-
+        p_series = new QPieSeries(this);
+        foreach(Record r, m_records)
+        {
+            p_series->append(r.User(),r.Seconds());
+        }
+/*
         QString random="Joe";
         double x=2;
-        p_series = new QPieSeries(this);
+
         p_series->append("Jane", 1);
         p_series->append(random,x);
         p_series->append("Andy", 3);
@@ -99,7 +106,7 @@ MainWin::MainWin(QWidget *parent)
         slice3->setLabelVisible();
         QPieSlice *slice4 = p_series->slices().at(4);
         slice4->setLabelVisible();
-
+*/
         p_chart = new QChart();
         p_chart->addSeries(p_series);
         p_chart->setAnimationOptions(QChart::AllAnimations);
@@ -138,8 +145,7 @@ MainWin::MainWin(QWidget *parent)
             this->ui->e_employee_combo_box->addItem(e.Name());
         }
 
-        m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
-        m_filters = Filters(m_records);
+
 
         QList<QString> websites = m_filters.listWebsites();
         foreach(QString w, websites)
@@ -156,10 +162,9 @@ MainWin::MainWin(QWidget *parent)
     }
     else
     {
-        hide();
-        employee_window employee_window;
-        employee_window.show();
-
+        this->hide();
+        employee_window emp_win = employee_window(m_employee,this);
+        emp_win.exec();
     }
 }
 
@@ -174,6 +179,10 @@ void MainWin::handleLogin(QString user)
     if(thisUser->isSupervisor())
     {
         m_supervisor = *reinterpret_cast<Supervisor *>(thisUser);
+    }
+    else
+    {
+        m_employee = *reinterpret_cast<Employee *>(thisUser);
     }
 }
 
