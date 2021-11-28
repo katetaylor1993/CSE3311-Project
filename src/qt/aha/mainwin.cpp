@@ -19,6 +19,8 @@ MainWin::MainWin(QWidget *parent)
 
     connect(m_dbh,SIGNAL(loggedIn(QString)),this,SLOT(handleLogin(QString)));
 
+    m_dbh->exportData("C:\\Users\\kathe\\Downloads\\domains.csv","emp4");
+
     // first, user needs to login
     LoginWin * login = new LoginWin(m_dbh, this);
 
