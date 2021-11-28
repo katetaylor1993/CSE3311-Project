@@ -10,7 +10,8 @@
 #include "record.h"
 #include "supervisor.h"
 
-struct websiteCategory_t { QString wesbite; QString category; };
+enum exportErr { NO_ERROR, INVALID_FILE, OPEN_FILE, DATABASE };
+
 class DatabaseHandler : public QObject
 {
     Q_OBJECT
@@ -35,6 +36,7 @@ public:
     QList<Record> getAllRecords(QList<Employee> employees);
     void updateCategory(QString url, QString cat);
     QString getCategory(QString website);
+    exportErr exportData(QString filename, QString employeeName);
 
 
 public slots:

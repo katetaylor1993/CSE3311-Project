@@ -119,6 +119,9 @@ void DatabaseHandler::connectToDB() //application connect with database
 
     if(!opened){ qDebug() << "remote database not opened"; }
 
+    QSqlQuery q = QSqlQuery("INSERT OR UPDATE record (username, website, date, time) VALUES ('emp4','www.github.com', '2021-11-19', 400",m_db);
+
+
     m_categories = new QFile("../URL-categorization-DFE.csv",this);
     fillCategories();
 }
@@ -169,6 +172,47 @@ QString DatabaseHandler::getCategory(QString website)
         qDebug() << "website category map access attepted when map is empty";
         return nullptr;
     }
+}
+
+exportErr DatabaseHandler::exportData(QString filename, QString employeeName)
+{
+    if(!filename.contains(".csv"))
+        return INVALID_FILE;
+    QFile file = QFile(filename);
+    if(!(file.open(QIODevice::ReadOnly)))
+        return OPEN_FILE;
+
+    int lineindex = 0;                     // file line counter
+    QTextStream in(&file);                 // read to text stream
+
+    while (!in.atEnd())
+    {
+        // read one line from textstream(separated by "\n")
+        QString fileLine = in.readLine();
+
+        //skip the first line
+        if(lineindex==0)
+        {
+            lineindex++;
+            continue;
+        }
+
+        // parse the read line into separate pieces(tokens) with "," as the delimiter
+        QStringList lineToken = fileLine.split(",");
+        QDate date = QDate::fromString(lineToken[1],"M/d/yyyy");
+        QString dateStr = date.toString("yyyy-MM-dd");
+
+        QString qstr = QString("INSERT INTO report (username, website, date, time) "
+                               "VALUES ('"+employeeName+"','"+lineToken[0]+"', '"+dateStr+"', "+lineToken[2]+
+                ") ON DUPLICATE KEY UPDATE time="+lineToken[2]+"");
+
+        QSqlQuery q = QSqlQuery(m_db);
+        q.prepare(qstr);
+        q.exec();
+        qDebug() << q.lastError().databaseText();
+        //qDebug() << qstr;
+    }
+    return NO_ERROR;
 }
 
 QList<QString> DatabaseHandler::fetch(QString attr, QString table, QString whereAttr, QString whereVal)
