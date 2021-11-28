@@ -208,7 +208,7 @@ QListView::item:selected
 
 QListView::item:!selected
 {
-	color:white;
+	color:#000000;
 	background-color: transparent;
 	border: none;
 	padding-left : 10px;
@@ -218,7 +218,7 @@ QListView::item:!selected
 
 QListView::item:!selected:hover
 {
-	color: #fff;
+	color: #000000f;
 	background-color: #00B4D8;
 	border: none;
 	padding-left : 10px;
@@ -326,7 +326,7 @@ QTableView::disabled
 QTableView::item:hover 
 {
     background-color: #bcbdbb;
-    color: #000;
+    color:#000000;
 
 }
 
@@ -334,7 +334,7 @@ QTableView::item:hover
 QTableView::item:selected 
 {
 	background-color: #0077B6;
-    color: #fff;
+    color: #000000;
 
 }
 
@@ -352,7 +352,7 @@ QTableCornerButton::section
 {
 	background-color: #ced5e3;
 	border: none;
-    color: #fff;
+    color:#000000;
 
 }
 
@@ -377,7 +377,7 @@ QHeaderView::section:disabled
 
 QHeaderView::section:checked
 {
-    color: #fff;
+    color: #000000;
     background-color: #0077B6;
 
 }
@@ -886,8 +886,8 @@ QPushButton::hover
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>picture/menu.png</normaloff>picture/menu.png</iconset>
+                <iconset resource="pic.qrc">
+                 <normaloff>:/picture/picture/menu.png</normaloff>:/picture/picture/menu.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -1609,7 +1609,7 @@ border-radius:opx;
           </layout>
          </widget>
          <widget class="QWidget" name="employee_ui">
-          <layout class="QGridLayout" name="gridLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout_36">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -1622,10 +1622,7 @@ border-radius:opx;
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <property name="horizontalSpacing">
-            <number>0</number>
-           </property>
-           <item row="0" column="0">
+           <item>
             <widget class="QFrame" name="workforce__panel_2">
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -1650,7 +1647,7 @@ border-radius:opx;
                <number>0</number>
               </property>
               <item alignment="Qt::AlignTop">
-               <widget class="QFrame" name="frame_7">
+               <widget class="QFrame" name="control_block_3">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -1667,8 +1664,8 @@ border-radius:opx;
                  <string notr="true">QFrame
 {
 	background: #D6F1FF;
-    opacity: 70;
-
+   	border-bottom-right-radius:opx;
+	border-bottom-left-radius:opx;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1693,11 +1690,272 @@ border-radius:opx;
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
+                 <item>
+                  <widget class="QFrame" name="emploee_block_2">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_22">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="employee_label_2">
+                      <property name="text">
+                       <string>Employee</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="employee_combo_box_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="category_bleck_2">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_23">
+                    <item>
+                     <widget class="QLabel" name="category_label_2">
+                      <property name="text">
+                       <string>Site Category</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="category_combo_box_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="website_block_2">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <item>
+                     <widget class="QLabel" name="website_label_2">
+                      <property name="text">
+                       <string>Website</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="website_combo_box_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignTop">
+               <widget class="QFrame" name="control_block_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>90</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>80</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QFrame
+{
+	background: #D6F1FF;
+border-radius:opx;
+}</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_14">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QFrame" name="start_date_block_2">
+                   <property name="styleSheet">
+                    <string notr="true">border-radius: 0px;</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_39">
+                    <item>
+                     <widget class="QLabel" name="start_date_label_2">
+                      <property name="text">
+                       <string>Start Date</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDateEdit" name="start_date_edit_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="end_date_blcok_2">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_40">
+                    <item>
+                     <widget class="QLabel" name="end_date_label_2">
+                      <property name="text">
+                       <string>End Date</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDateEdit" name="end_date_edit_2">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>25</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="plot_control_block_2">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>200</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_30">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QPushButton" name="database_button_2">
+                      <property name="icon">
+                       <iconset resource="pic.qrc">
+                        <normaloff>:/picture/picture/clear.png</normaloff>:/picture/picture/clear.png</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="pushButton_3">
+                      <property name="icon">
+                       <iconset>
+                        <normaloff>:/pics/picture/clear.png</normaloff>:/pics/picture/clear.png</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>30</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
               </item>
               <item>
-               <widget class="QFrame" name="plot_window_2">
+               <widget class="QFrame" name="plot_block_2">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                   <horstretch>0</horstretch>
@@ -1725,7 +1983,7 @@ border-radius:opx;
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_7">
+                <layout class="QVBoxLayout" name="verticalLayout_6">
                  <property name="spacing">
                   <number>0</number>
                  </property>
@@ -1747,7 +2005,23 @@ border-radius:opx;
                     <number>0</number>
                    </property>
                    <widget class="QWidget" name="bar_page_2">
-                    <layout class="QVBoxLayout" name="verticalLayout_8"/>
+                    <layout class="QHBoxLayout" name="horizontalLayout_31">
+                     <item>
+                      <widget class="QTableView" name="tableView_3">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="bar_frame_2">
+                       <layout class="QHBoxLayout" name="horizontalLayout_32"/>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                    <widget class="QWidget" name="line_page_2">
                     <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1757,9 +2031,21 @@ border-radius:opx;
                     </layout>
                    </widget>
                    <widget class="QWidget" name="pie_page_2">
-                    <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <layout class="QHBoxLayout" name="horizontalLayout_33">
                      <item>
-                      <widget class="QCustomPlot" name="pie_chart_2" native="true"/>
+                      <widget class="QTableView" name="tableView_4">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="pie_frame_2">
+                       <layout class="QHBoxLayout" name="horizontalLayout_34"/>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -1769,7 +2055,7 @@ border-radius:opx;
                </widget>
               </item>
               <item alignment="Qt::AlignBottom">
-               <widget class="QFrame" name="frame_9">
+               <widget class="QFrame" name="plot_button_block_2">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -1782,13 +2068,63 @@ border-radius:opx;
                   <height>80</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">QFrame{
+	background: #D6F1FF;
+   	border-top-right-radius:opx;
+	border-top-left-radius:opx;
+}</string>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_14"/>
+                <layout class="QHBoxLayout" name="horizontalLayout_35">
+                 <item>
+                  <widget class="QPushButton" name="bar_chart_button_2">
+                   <property name="icon">
+                    <iconset resource="pic.qrc">
+                     <normaloff>:/picture/picture/bar-chart.png</normaloff>:/picture/picture/bar-chart.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="line_chart_button_2">
+                   <property name="icon">
+                    <iconset resource="pic.qrc">
+                     <normaloff>:/picture/picture/line-chart.png</normaloff>:/picture/picture/line-chart.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pie_chart_button_2">
+                   <property name="icon">
+                    <iconset resource="pic.qrc">
+                     <normaloff>:/picture/picture/pie_chart.png</normaloff>:/picture/picture/pie_chart.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>
