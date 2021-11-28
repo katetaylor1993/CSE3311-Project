@@ -93,6 +93,14 @@ private slots:
 
     void on_category_combo_box_currentTextChanged(const QString &arg1);
 
+    void on_e_bar_chart_button_clicked();
+
+    void on_e_line_chart_button_clicked();
+
+    void on_e_pie_chart_button_clicked();
+
+    void on_upload_button_clicked();
+
 private:
     Ui::MainWin *ui;
 
@@ -109,6 +117,7 @@ private:
     QList<Record> m_graphData;
     Filters m_filters;
 
+    QSqlQueryModel *p_model;
     QPieSeries *p_series;
     QChart *p_chart;
     QChartView *p_chartView;
