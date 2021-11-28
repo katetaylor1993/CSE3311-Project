@@ -133,7 +133,7 @@ MainWin::MainWin(QWidget *parent)
 
         foreach(Employee e, m_supervisor.m_employees)
         {
-            this->ui->employee_combo_box->addItem(e.Name());
+            this->ui->e_employee_combo_box->addItem(e.Name());
         }
 
         m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
@@ -143,6 +143,7 @@ MainWin::MainWin(QWidget *parent)
         foreach(QString w, websites)
         {
             this->ui->website_combo_box->addItem(w);
+            this->ui->e_website_combo_box->addItem(w);
         }
 
         QList<QString> categories = m_filters.listCategories();
@@ -273,6 +274,15 @@ void MainWin::on_setting_button_clicked()
 void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
+
+    p_model =new QSqlTableModel(this);
+    p_model->setQuery("SELECT * FROM category");
+    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
+    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
+
+    ui->pie_chart_table_view->setModel(p_model);
+    ui->pie_chart_table_view->show();
+
 }
 
 void MainWin::on_line_chart_button_clicked()
@@ -466,5 +476,28 @@ void MainWin::on_employee_combo_box_currentTextChanged(const QString &arg1)
 void MainWin::on_category_combo_box_currentTextChanged(const QString &arg1)
 {
 
+}
+
+
+
+//employee ui buttons
+void MainWin::on_e_bar_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(0);
+}
+
+void MainWin::on_e_line_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(1);
+}
+
+void MainWin::on_e_pie_chart_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(2);
+}
+
+void MainWin::on_upload_button_clicked()
+{
+    ui->e_plot_stack->setCurrentIndex(3);
 }
 
