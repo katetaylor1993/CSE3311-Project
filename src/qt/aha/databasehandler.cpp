@@ -190,19 +190,16 @@ int DatabaseHandler::exportData(QString filename, QString employeeName)
     {
         // read one line from textstream(separated by "\n")
         QString fileLine = in.readLine();
-
         //skip the first line
         if(lineindex==0)
         {
             lineindex++;
             continue;
         }
-
         // parse the read line into separate pieces(tokens) with "," as the delimiter
         QStringList lineToken = fileLine.split(",");
         QDate date = QDate::fromString(lineToken[1],"M/d/yyyy");
         QString dateStr = date.toString("yyyy-MM-dd");
-
         QString qstr = QString("INSERT INTO report (username, website, date, time) "
                                "VALUES ('"+employeeName+"','"+lineToken[0]+"', '"+dateStr+"', "+lineToken[2]+
                 ") ON DUPLICATE KEY UPDATE time="+lineToken[2]+"");
