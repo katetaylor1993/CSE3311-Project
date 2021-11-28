@@ -35,6 +35,7 @@
 #include "filters.h"
 
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWin; }
 QT_END_NAMESPACE
@@ -94,6 +95,8 @@ private slots:
 
 private:
     Ui::MainWin *ui;
+
+
     QPropertyAnimation *animation1;
     QPropertyAnimation *animation2;
     QParallelAnimationGroup* animationGroup;
@@ -105,6 +108,10 @@ private:
     QList<Record> m_records;
     QList<Record> m_graphData;
     Filters m_filters;
+
+    QPieSeries *p_series;
+    QChart *p_chart;
+    QChartView *p_chartView;
 
     //TODO: Change this to be class with more information about the user
     int m_currentUser;
