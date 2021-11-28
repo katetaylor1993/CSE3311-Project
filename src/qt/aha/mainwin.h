@@ -101,21 +101,27 @@ private slots:
 
     void on_upload_button_clicked();
 
+    void on_browse_button_clicked();
+
+    void on_OK_button_clicked();
+
 private:
     Ui::MainWin *ui;
-
 
     QPropertyAnimation *animation1;
     QPropertyAnimation *animation2;
     QParallelAnimationGroup* animationGroup;
+
     QSqlQueryModel *model1;
     QSqlQueryModel *model2;
-    DatabaseHandler * m_dbh;
+    DatabaseHandler *m_dbh;
 
     Supervisor m_supervisor;
     QList<Record> m_records;
     QList<Record> m_graphData;
     Filters m_filters;
+
+    QSqlQueryModel *b_model;
 
     QSqlQueryModel *p_model;
     QPieSeries *p_series;
