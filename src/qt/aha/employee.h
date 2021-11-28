@@ -7,6 +7,7 @@ class Employee : public User
 {
 public:
     explicit Employee(QString name, Login login);
+    Employee();
 };
 
 #endif // EMPLOYEE_H

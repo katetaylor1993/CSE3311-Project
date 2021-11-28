@@ -10,7 +10,7 @@
 #include "record.h"
 #include "supervisor.h"
 
-enum exportErr { NO_ERROR, INVALID_FILE, OPEN_FILE, DATABASE };
+//enum exportErr { NO_ERROR, INVALID_FILE, OPEN_FILE, DATABASE };
 
 class DatabaseHandler : public QObject
 {
@@ -36,7 +36,7 @@ public:
     QList<Record> getAllRecords(QList<Employee> employees);
     void updateCategory(QString url, QString cat);
     QString getCategory(QString website);
-    exportErr exportData(QString filename, QString employeeName);
+    int exportData(QString filename, QString employeeName);
 
 
 public slots:
