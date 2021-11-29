@@ -81,46 +81,25 @@ MainWin::MainWin(QWidget *parent)
         chartView->setParent(ui->bar_frame);
         //chartView->setParent(ui->e_bar_table_view);
 
+        int num=0;
         p_series = new QPieSeries(this);
         foreach(Record r, m_records)
         {
             p_series->append(r.User(),r.Seconds());
+            QPieSlice *slice = p_series->slices().at(num);
+            slice->setLabelVisible(true);
+            num++;
         }
-/*
-        QString random="Joe";
-        double x=2;
 
-        p_series->append("Jane", 1);
-        p_series->append(random,x);
-        p_series->append("Andy", 3);
-        p_series->append("Barbara", 4);
-        p_series->append("Axel", 5);
-
-        QPieSlice *slice0 = p_series->slices().at(0);
-        slice0->setLabelVisible();
-        QPieSlice *slice1 = p_series->slices().at(1);
-        slice1->setExploded(true);
-        slice1->setLabelVisible();
-        slice1->setPen(QPen(Qt::darkGreen, 2));
-        slice1->setBrush(Qt::green);
-        QPieSlice *slice2 = p_series->slices().at(2);
-        slice2->setLabelVisible();
-        QPieSlice *slice3 = p_series->slices().at(3);
-        slice3->setLabelVisible();
-        QPieSlice *slice4 = p_series->slices().at(4);
-        slice4->setLabelVisible();
-*/
         p_chart = new QChart();
         p_chart->addSeries(p_series);
         p_chart->setAnimationOptions(QChart::AllAnimations);
-        p_chart->setTitle("Piechart example");
+        p_chart->setTitle("Piechart");
         p_chart->legend()->hide();
 
         p_chartView = new QChartView(p_chart);
-        p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
         p_chartView->setRenderHint(QPainter::Antialiasing);
         p_chartView->setParent(ui->pie_frame);
-        //p_chartView->setParent(ui->e_pie_table_view);
 
         //line chart
         ui->line_chart->addGraph();
@@ -277,12 +256,21 @@ void MainWin::on_website_button_clicked()
 {
     ui->ui_stack->setCurrentIndex(2);
     ui->ui_title->setText("<h1>Website</h1>");
+
+    w_model =new QSqlTableModel(this);
+    w_model->setQuery("SELECT * FROM website");
+    w_model->setHeaderData(0, Qt::Horizontal, tr("site_name"));
+    w_model->setHeaderData(1, Qt::Horizontal, tr("category"));
+
+    ui->website_table_view->setModel(w_model);
+    ui->website_table_view->show();
 }
 
 void MainWin::on_setting_button_clicked()
 {
     ui->ui_stack->setCurrentIndex(3);
     ui->ui_title->setText("<h1>Setting</h1>");
+    on_user_button_clicked();
 }
 
 //plot stack functions
@@ -299,8 +287,6 @@ void MainWin::on_bar_chart_button_clicked()
 
     ui->bar_chart_table_view->setModel(b_model);
     ui->bar_chart_table_view->show();
-
-
 }
 
 void MainWin::on_line_chart_button_clicked()
@@ -313,26 +299,9 @@ void MainWin::on_pie_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(2);
 
-    p_model =new QSqlTableModel(this);
-    p_model->setQuery("SELECT * FROM category");
-    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
-    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
 
-    ui->pie_chart_table_view->setModel(p_model);
-    ui->pie_chart_table_view->show();
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 //setting stack functions
@@ -359,6 +328,13 @@ void MainWin::on_user_button_clicked()
 void MainWin::on_category_button_clicked()
 {
     ui->setting_stack->setCurrentIndex(1);
+    c_model =new QSqlTableModel(this);
+    c_model->setQuery("SELECT * FROM category");
+    c_model->setHeaderData(0, Qt::Horizontal, tr("category"));
+    c_model->setHeaderData(1, Qt::Horizontal, tr("description"));
+
+    ui->category_table_view->setModel(c_model);
+    ui->category_table_view->show();
 }
 
 //edit user functions
@@ -400,6 +376,7 @@ void MainWin::on_user_save_button_clicked()
     }else{
         QMessageBox::information(this,"Save","Cannnot save to database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -440,6 +417,7 @@ void MainWin::on_user_update_button_clicked()
     }else{
         QMessageBox::information(this,"Update","Cannnot update database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -460,6 +438,7 @@ void MainWin::on_user_remove_button_clicked()
     }else{
         QMessageBox::information(this,"Remove","Cannnot remove item in database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -538,6 +517,104 @@ void MainWin::on_browse_button_clicked()
 
 void MainWin::on_OK_button_clicked()
 {
+    int ret = DatabaseHandler::getInstance()->exportData(ui->file_name_line_edit->text(),m_employee.Username());
+    if(ret == 1)
+    {
+        ui->file_name_line_edit->setText("There was an issue with file.");
+    }
 
+}
+
+
+void MainWin::on_w_save_button_clicked()
+{
+    QString site_name,category;
+    site_name=ui->domain_combo_box->currentText();
+    category=ui->w_category_combo_box->currentText();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO website (site_name,category)" "VALUES (?, ?)");
+    query.addBindValue(site_name);
+    query.addBindValue(category);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Website","New website saved.");
+        }else{
+            QMessageBox::information(this,"Website","No website founded.");
+        }
+
+    }else{
+        QMessageBox::information(this,"Website","Cannnot save to database.");
+    }
+    on_website_button_clicked();
+
+}
+
+
+void MainWin::on_w_remove_button_clicked()
+{
+    QString site_name;
+    site_name=ui->domain_combo_box->currentText();
+    QSqlQuery query;
+    query.prepare("DELETE FROM website WHERE site_name = ?");
+    query.addBindValue(site_name);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Website","Website removed.");
+        }else{
+            QMessageBox::information(this,"Website","No website founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Website","Cannnot remove item in database.");
+    }
+    on_website_button_clicked();
+}
+
+
+void MainWin::on_c_add_new_button_clicked()
+{
+    QString category,description;
+    category=ui->categoty_line_edit->text();
+    description=ui->description_line_edit->text();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO category (category,description)" "VALUES (?, ?)");
+    query.addBindValue(category);
+    query.addBindValue(description);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Category","New category saved.");
+        }else{
+            QMessageBox::information(this,"Category","No category founded.");
+        }
+
+    }else{
+        QMessageBox::information(this,"Category","Cannnot save to database.");
+    }
+    on_category_button_clicked();
+}
+
+
+void MainWin::on_c_remove_button_clicked()
+{
+    QString category;
+    category=ui->domain_combo_box->currentText();
+    QSqlQuery query;
+    query.prepare("DELETE FROM category WHERE category = ?");
+    query.addBindValue(category);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Category","Category removed.");
+        }else{
+            QMessageBox::information(this,"Category","No category founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Category","Cannnot remove item in database.");
+    }
+    on_category_button_clicked();
 }
 
