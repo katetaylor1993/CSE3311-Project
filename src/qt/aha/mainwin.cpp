@@ -32,11 +32,34 @@ MainWin::MainWin(QWidget *parent)
     {
         ui->setupUi(this);
 
-
+        //feeding infomation into comboboxes
         m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
         m_filters = Filters(m_records);
 
+        connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
+        foreach(Employee e, m_supervisor.m_employees)
+        {
+            this->ui->e_employee_combo_box->addItem(e.Name());
+        }
+
+        QList<QString> websites = m_filters.listWebsites();
+        foreach(QString w, websites)
+        {
+            this->ui->website_combo_box->addItem(w);
+            this->ui->e_website_combo_box->addItem(w);
+            this->ui->domain_combo_box->addItem(w);
+        }
+
+        QList<QString> categories = m_filters.listCategories();
+        foreach(QString c, categories)
+        {
+            this->ui->category_combo_box->addItem(c);
+            this->ui->e_category_combo_box->addItem(c);
+            this->ui->w_category_combo_box->addItem(c);
+        }
+
+        //barchart
         QBarSet *set0 = new QBarSet("Bob");
         QBarSet *set1 = new QBarSet("Tom");
         QBarSet *set2 = new QBarSet("John");
@@ -81,27 +104,29 @@ MainWin::MainWin(QWidget *parent)
         chartView->setParent(ui->bar_frame);
         //chartView->setParent(ui->e_bar_table_view);
 
+        //pie chart
         int num=0;
         p_series = new QPieSeries(this);
         foreach(Record r, m_records)
         {
             p_series->append(r.User(),r.Seconds());
             QPieSlice *slice = p_series->slices().at(num);
-            slice->setLabelVisible(true);
+            //slice->setLabelVisible(true);
             num++;
         }
 
         p_chart = new QChart();
         p_chart->addSeries(p_series);
         p_chart->setAnimationOptions(QChart::AllAnimations);
-        p_chart->setTitle("Piechart");
-        p_chart->legend()->hide();
+        p_chart->setTitle("Piechart placeholder");
+        p_chart->legend()->setAlignment(Qt::AlignBottom);
 
         p_chartView = new QChartView(p_chart);
         p_chartView->setRenderHint(QPainter::Antialiasing);
         p_chartView->setParent(ui->pie_frame);
 
         //line chart
+        QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
         ui->line_chart->addGraph();
         ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
         ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
@@ -110,41 +135,89 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart->xAxis->setRange(0,1000);
         ui->line_chart->yAxis->setRange(0,1000);
         ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
-
-        QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
         ui->line_chart->graph(0)->setData(dataX,dataY);
         ui->line_chart->rescaleAxes();
         ui->line_chart->replot();
         ui->line_chart->update();
 
+        ui->line_chart_2->addGraph();
+        ui->line_chart_2->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
+        ui->line_chart_2->graph(0)->setLineStyle(QCPGraph::lsLine);
+        ui->line_chart_2->xAxis->setLabel("X");
+        ui->line_chart_2->yAxis->setLabel("Y");
+        ui->line_chart_2->xAxis->setRange(0,1000);
+        ui->line_chart_2->yAxis->setRange(0,1000);
+        ui->line_chart_2->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
+        ui->line_chart_2->graph(0)->setData(dataX,dataY);
+        ui->line_chart_2->rescaleAxes();
+        ui->line_chart_2->replot();
+        ui->line_chart_2->update();
 
-        connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
+        //percentbarchart
+        QBarSet *eb_set0 = new QBarSet("Jane");
+        QBarSet *eb_set1 = new QBarSet("John");
+        QBarSet *eb_set2 = new QBarSet("Axel");
+        QBarSet *eb_set3 = new QBarSet("Mary");
+        QBarSet *eb_set4 = new QBarSet("Samantha");
 
-        foreach(Employee e, m_supervisor.m_employees)
-        {
-            this->ui->e_employee_combo_box->addItem(e.Name());
-        }
+        *eb_set0 << 1 << 2 << 3 << 4 << 5 << 6;
+        *eb_set1 << 5 << 0 << 0 << 4 << 0 << 7;
+        *eb_set2 << 3 << 5 << 8 << 13 << 8 << 5;
+        *eb_set3 << 5 << 6 << 7 << 3 << 4 << 5;
+        *eb_set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+        QPercentBarSeries *eb_series = new QPercentBarSeries();
+        eb_series->append(eb_set0);
+        eb_series->append(eb_set1);
+        eb_series->append(eb_set2);
+        eb_series->append(eb_set3);
+        eb_series->append(eb_set4);
+
+        QChart *eb_chart = new QChart();
+        eb_chart->addSeries(eb_series);
+        eb_chart->setTitle("Percentbarchart placeholder");
+        eb_chart->setAnimationOptions(QChart::SeriesAnimations);
+
+        QStringList eb_categories;
+        eb_categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+        QBarCategoryAxis *eb_axisX = new QBarCategoryAxis();
+        axisX->append(eb_categories);
+        eb_chart->addAxis(eb_axisX, Qt::AlignBottom);
+        eb_series->attachAxis(eb_axisX);
+        QValueAxis *eb_axisY = new QValueAxis();
+        chart->addAxis(eb_axisY, Qt::AlignLeft);
+        eb_series->attachAxis(eb_axisY);
+
+        eb_chart->legend()->setVisible(true);
+        eb_chart->legend()->setAlignment(Qt::AlignBottom);
+
+        QChartView *eb_chartView = new QChartView(eb_chart);
+        eb_chartView->setRenderHint(QPainter::Antialiasing);
+        eb_chartView->setParent(ui->e_bar_frame);
 
 
+        //donuts
+        QPieSeries *dc_series = new QPieSeries();
+        dc_series->setHoleSize(0.35);
+        dc_series->append("Protein 4.2%", 4.2);
+        QPieSlice *dc_slice = dc_series->append("Fat 15.6%", 15.6);
+        dc_slice->setExploded();
+        dc_slice->setLabelVisible();
+        dc_series->append("Other 23.8%", 23.8);
+        dc_series->append("Carbs 56.4%", 56.4);
+        QChart *dc_chart = new QChart();
+        dc_chart->setAnimationOptions(QChart::SeriesAnimations);
+        QChartView *dc_chartView = new QChartView();
+        dc_chartView->setRenderHint(QPainter::Antialiasing);
+        dc_chartView->chart()->setTitle("Donut with a lemon glaze (100g)");
+        dc_chartView->chart()->addSeries(dc_series);
+        dc_chartView->chart()->legend()->setAlignment(Qt::AlignBottom);
+        dc_chartView->setParent(ui->e_pie_frame);
 
-        QList<QString> websites = m_filters.listWebsites();
-        foreach(QString w, websites)
-        {
-            this->ui->website_combo_box->addItem(w);
-            this->ui->e_website_combo_box->addItem(w);
-            this->ui->domain_combo_box->addItem(w);
-        }
-
-        QList<QString> categories = m_filters.listCategories();
-        foreach(QString c, categories)
-        {
-            this->ui->category_combo_box->addItem(c);
-            this->ui->e_category_combo_box->addItem(c);
-            this->ui->w_category_combo_box->addItem(c);
-        }
     }
     else
     {
+        //showing the employee window
         this->hide();
         employee_window emp_win = employee_window(m_employee,this);
         emp_win.exec();
@@ -263,6 +336,7 @@ void MainWin::on_website_button_clicked()
     w_model->setHeaderData(1, Qt::Horizontal, tr("category"));
 
     ui->website_table_view->setModel(w_model);
+    ui->website_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->website_table_view->show();
 }
 
@@ -286,6 +360,7 @@ void MainWin::on_bar_chart_button_clicked()
     b_model->setHeaderData(3, Qt::Horizontal, tr("date"));
 
     ui->bar_chart_table_view->setModel(b_model);
+    ui->bar_chart_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->bar_chart_table_view->show();
 }
 
@@ -317,6 +392,8 @@ void MainWin::on_user_button_clicked()
     model1->setHeaderData(3, Qt::Horizontal, tr("isAdmin"));
     model1->setHeaderData(4, Qt::Horizontal, tr("isSupervisor"));
     ui->user_table_view->setModel(model1);
+    ui->user_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->user_table_view->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->user_table_view->show();
 
     model2 =new QSqlTableModel(this);
@@ -334,6 +411,7 @@ void MainWin::on_category_button_clicked()
     c_model->setHeaderData(1, Qt::Horizontal, tr("description"));
 
     ui->category_table_view->setModel(c_model);
+    ui->category_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->category_table_view->show();
 }
 
