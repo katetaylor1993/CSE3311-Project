@@ -1907,13 +1907,13 @@ border-radius:opx;
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QPushButton" name="go_button">
+                     <widget class="QPushButton" name="e_go_button">
                       <property name="text">
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset>
-                        <normaloff>picture/go.png</normaloff>picture/go.png</iconset>
+                       <iconset resource="pic.qrc">
+                        <normaloff>:/picture/picture/go.png</normaloff>:/picture/picture/go.png</iconset>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -2032,7 +2032,7 @@ border-radius:opx;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QFrame" name="pie_frame_2">
+                      <widget class="QFrame" name="e_pie_frame">
                        <layout class="QHBoxLayout" name="horizontalLayout_34"/>
                       </widget>
                      </item>
@@ -2081,12 +2081,28 @@ border-radius:opx;
                           </property>
                          </spacer>
                         </item>
+                        <item row="1" column="1">
+                         <spacer name="verticalSpacer_13">
+                          <property name="orientation">
+                           <enum>Qt::Vertical</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>20</width>
+                            <height>40</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
                         <item row="0" column="1">
                          <layout class="QGridLayout" name="gridLayout_2">
-                          <item row="1" column="0">
-                           <widget class="QLabel" name="file_name_label">
-                            <property name="text">
-                             <string>&lt;h3&gt;File Name&lt;/h3&gt;</string>
+                          <item row="2" column="0">
+                           <widget class="QLineEdit" name="file_name_line_edit">
+                            <property name="minimumSize">
+                             <size>
+                              <width>1000</width>
+                              <height>30</height>
+                             </size>
                             </property>
                            </widget>
                           </item>
@@ -2103,13 +2119,10 @@ border-radius:opx;
                             </property>
                            </spacer>
                           </item>
-                          <item row="2" column="0">
-                           <widget class="QLineEdit" name="file_name_line_edit">
-                            <property name="minimumSize">
-                             <size>
-                              <width>1000</width>
-                              <height>30</height>
-                             </size>
+                          <item row="1" column="0">
+                           <widget class="QLabel" name="file_name_label">
+                            <property name="text">
+                             <string>&lt;h3&gt;File Name&lt;/h3&gt;</string>
                             </property>
                            </widget>
                           </item>
@@ -2196,19 +2209,6 @@ border-radius:opx;
                            </spacer>
                           </item>
                          </layout>
-                        </item>
-                        <item row="1" column="1">
-                         <spacer name="verticalSpacer_13">
-                          <property name="orientation">
-                           <enum>Qt::Vertical</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                           <size>
-                            <width>20</width>
-                            <height>40</height>
-                           </size>
-                          </property>
-                         </spacer>
                         </item>
                        </layout>
                       </widget>
@@ -2607,7 +2607,7 @@ border-radius:opx;
                                 </property>
                                 <layout class="QHBoxLayout" name="horizontalLayout_19">
                                  <item>
-                                  <widget class="QPushButton" name="pushButton_8">
+                                  <widget class="QPushButton" name="w_save_button">
                                    <property name="font">
                                     <font>
                                      <pointsize>-1</pointsize>
@@ -2617,6 +2617,13 @@ border-radius:opx;
                                    </property>
                                    <property name="text">
                                     <string>Save</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="w_remove_button">
+                                   <property name="text">
+                                    <string>Remove</string>
                                    </property>
                                   </widget>
                                  </item>
@@ -3923,7 +3930,7 @@ border-radius:opx;
                               <number>0</number>
                              </property>
                              <item alignment="Qt::AlignTop">
-                              <widget class="QLabel" name="label_12">
+                              <widget class="QLabel" name="category_label_3">
                                <property name="sizePolicy">
                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                  <horstretch>0</horstretch>
@@ -3936,7 +3943,7 @@ border-radius:opx;
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="lineEdit_5">
+                              <widget class="QLineEdit" name="categoty_line_edit">
                                <property name="sizePolicy">
                                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                                  <horstretch>0</horstretch>
@@ -3975,7 +3982,7 @@ border-radius:opx;
                               <number>0</number>
                              </property>
                              <item alignment="Qt::AlignTop">
-                              <widget class="QLabel" name="label_13">
+                              <widget class="QLabel" name="description_label">
                                <property name="sizePolicy">
                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                  <horstretch>0</horstretch>
@@ -3988,7 +3995,7 @@ border-radius:opx;
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="lineEdit_6">
+                              <widget class="QLineEdit" name="description_line_edit">
                                <property name="styleSheet">
                                 <string notr="true">	border-top-right-radius: 10px;
 	border-top-left-radius:10px;
@@ -4025,7 +4032,7 @@ border-radius:opx;
                              </property>
                              <layout class="QHBoxLayout" name="horizontalLayout_24">
                               <item>
-                               <widget class="QPushButton" name="pushButton_6">
+                               <widget class="QPushButton" name="c_add_new_button">
                                 <property name="font">
                                  <font>
                                   <pointsize>-1</pointsize>
@@ -4039,7 +4046,7 @@ border-radius:opx;
                                </widget>
                               </item>
                               <item>
-                               <widget class="QPushButton" name="pushButton_7">
+                               <widget class="QPushButton" name="c_remove_button">
                                 <property name="text">
                                  <string>Remove</string>
                                 </property>

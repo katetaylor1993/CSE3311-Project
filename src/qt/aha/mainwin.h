@@ -105,6 +105,14 @@ private slots:
 
     void on_OK_button_clicked();
 
+    void on_w_save_button_clicked();
+
+    void on_w_remove_button_clicked();
+
+    void on_c_add_new_button_clicked();
+
+    void on_c_remove_button_clicked();
+
 private:
     Ui::MainWin *ui;
 
@@ -123,8 +131,9 @@ private:
     Filters m_filters;
 
     QSqlQueryModel *b_model;
+    QSqlQueryModel *w_model;
+    QSqlQueryModel *c_model;
 
-    QSqlQueryModel *p_model;
     QPieSeries *p_series;
     QChart *p_chart;
     QChartView *p_chartView;

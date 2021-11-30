@@ -32,11 +32,34 @@ MainWin::MainWin(QWidget *parent)
     {
         ui->setupUi(this);
 
-
+        //feeding infomation into comboboxes
         m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
         m_filters = Filters(m_records);
 
+        connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
+        foreach(Employee e, m_supervisor.m_employees)
+        {
+            this->ui->e_employee_combo_box->addItem(e.Name());
+        }
+
+        QList<QString> websites = m_filters.listWebsites();
+        foreach(QString w, websites)
+        {
+            this->ui->website_combo_box->addItem(w);
+            this->ui->e_website_combo_box->addItem(w);
+            this->ui->domain_combo_box->addItem(w);
+        }
+
+        QList<QString> categories = m_filters.listCategories();
+        foreach(QString c, categories)
+        {
+            this->ui->category_combo_box->addItem(c);
+            this->ui->e_category_combo_box->addItem(c);
+            this->ui->w_category_combo_box->addItem(c);
+        }
+
+        //barchart
         QBarSet *set0 = new QBarSet("Bob");
         QBarSet *set1 = new QBarSet("Tom");
         QBarSet *set2 = new QBarSet("John");
@@ -81,48 +104,29 @@ MainWin::MainWin(QWidget *parent)
         chartView->setParent(ui->bar_frame);
         //chartView->setParent(ui->e_bar_table_view);
 
+        //pie chart
+        int num=0;
         p_series = new QPieSeries(this);
         foreach(Record r, m_records)
         {
             p_series->append(r.User(),r.Seconds());
+            QPieSlice *slice = p_series->slices().at(num);
+            //slice->setLabelVisible(true);
+            num++;
         }
-/*
-        QString random="Joe";
-        double x=2;
 
-        p_series->append("Jane", 1);
-        p_series->append(random,x);
-        p_series->append("Andy", 3);
-        p_series->append("Barbara", 4);
-        p_series->append("Axel", 5);
-
-        QPieSlice *slice0 = p_series->slices().at(0);
-        slice0->setLabelVisible();
-        QPieSlice *slice1 = p_series->slices().at(1);
-        slice1->setExploded(true);
-        slice1->setLabelVisible();
-        slice1->setPen(QPen(Qt::darkGreen, 2));
-        slice1->setBrush(Qt::green);
-        QPieSlice *slice2 = p_series->slices().at(2);
-        slice2->setLabelVisible();
-        QPieSlice *slice3 = p_series->slices().at(3);
-        slice3->setLabelVisible();
-        QPieSlice *slice4 = p_series->slices().at(4);
-        slice4->setLabelVisible();
-*/
         p_chart = new QChart();
         p_chart->addSeries(p_series);
         p_chart->setAnimationOptions(QChart::AllAnimations);
-        p_chart->setTitle("Piechart example");
-        p_chart->legend()->hide();
+        p_chart->setTitle("Piechart placeholder");
+        p_chart->legend()->setAlignment(Qt::AlignBottom);
 
         p_chartView = new QChartView(p_chart);
-        p_chartView->mapToScene(ui->pie_frame->x(),ui->pie_frame->y(),ui->pie_frame->width(),ui->pie_frame->height());
         p_chartView->setRenderHint(QPainter::Antialiasing);
         p_chartView->setParent(ui->pie_frame);
-        //p_chartView->setParent(ui->e_pie_table_view);
 
         //line chart
+        QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
         ui->line_chart->addGraph();
         ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
         ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
@@ -131,41 +135,89 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart->xAxis->setRange(0,1000);
         ui->line_chart->yAxis->setRange(0,1000);
         ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
-
-        QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
         ui->line_chart->graph(0)->setData(dataX,dataY);
         ui->line_chart->rescaleAxes();
         ui->line_chart->replot();
         ui->line_chart->update();
 
+        ui->line_chart_2->addGraph();
+        ui->line_chart_2->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
+        ui->line_chart_2->graph(0)->setLineStyle(QCPGraph::lsLine);
+        ui->line_chart_2->xAxis->setLabel("X");
+        ui->line_chart_2->yAxis->setLabel("Y");
+        ui->line_chart_2->xAxis->setRange(0,1000);
+        ui->line_chart_2->yAxis->setRange(0,1000);
+        ui->line_chart_2->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
+        ui->line_chart_2->graph(0)->setData(dataX,dataY);
+        ui->line_chart_2->rescaleAxes();
+        ui->line_chart_2->replot();
+        ui->line_chart_2->update();
 
-        connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
+        //percentbarchart
+        QBarSet *eb_set0 = new QBarSet("Jane");
+        QBarSet *eb_set1 = new QBarSet("John");
+        QBarSet *eb_set2 = new QBarSet("Axel");
+        QBarSet *eb_set3 = new QBarSet("Mary");
+        QBarSet *eb_set4 = new QBarSet("Samantha");
 
-        foreach(Employee e, m_supervisor.m_employees)
-        {
-            this->ui->e_employee_combo_box->addItem(e.Name());
-        }
+        *eb_set0 << 1 << 2 << 3 << 4 << 5 << 6;
+        *eb_set1 << 5 << 0 << 0 << 4 << 0 << 7;
+        *eb_set2 << 3 << 5 << 8 << 13 << 8 << 5;
+        *eb_set3 << 5 << 6 << 7 << 3 << 4 << 5;
+        *eb_set4 << 9 << 7 << 5 << 3 << 1 << 2;
+
+        QPercentBarSeries *eb_series = new QPercentBarSeries();
+        eb_series->append(eb_set0);
+        eb_series->append(eb_set1);
+        eb_series->append(eb_set2);
+        eb_series->append(eb_set3);
+        eb_series->append(eb_set4);
+
+        QChart *eb_chart = new QChart();
+        eb_chart->addSeries(eb_series);
+        eb_chart->setTitle("Percentbarchart placeholder");
+        eb_chart->setAnimationOptions(QChart::SeriesAnimations);
+
+        QStringList eb_categories;
+        eb_categories << "Jan" << "Feb" << "Mar" << "Apr" << "May" << "Jun";
+        QBarCategoryAxis *eb_axisX = new QBarCategoryAxis();
+        axisX->append(eb_categories);
+        eb_chart->addAxis(eb_axisX, Qt::AlignBottom);
+        eb_series->attachAxis(eb_axisX);
+        QValueAxis *eb_axisY = new QValueAxis();
+        chart->addAxis(eb_axisY, Qt::AlignLeft);
+        eb_series->attachAxis(eb_axisY);
+
+        eb_chart->legend()->setVisible(true);
+        eb_chart->legend()->setAlignment(Qt::AlignBottom);
+
+        QChartView *eb_chartView = new QChartView(eb_chart);
+        eb_chartView->setRenderHint(QPainter::Antialiasing);
+        eb_chartView->setParent(ui->e_bar_frame);
 
 
+        //donuts
+        QPieSeries *dc_series = new QPieSeries();
+        dc_series->setHoleSize(0.35);
+        dc_series->append("Protein 4.2%", 4.2);
+        QPieSlice *dc_slice = dc_series->append("Fat 15.6%", 15.6);
+        dc_slice->setExploded();
+        dc_slice->setLabelVisible();
+        dc_series->append("Other 23.8%", 23.8);
+        dc_series->append("Carbs 56.4%", 56.4);
+        QChart *dc_chart = new QChart();
+        dc_chart->setAnimationOptions(QChart::SeriesAnimations);
+        QChartView *dc_chartView = new QChartView();
+        dc_chartView->setRenderHint(QPainter::Antialiasing);
+        dc_chartView->chart()->setTitle("Donut with a lemon glaze (100g)");
+        dc_chartView->chart()->addSeries(dc_series);
+        dc_chartView->chart()->legend()->setAlignment(Qt::AlignBottom);
+        dc_chartView->setParent(ui->e_pie_frame);
 
-        QList<QString> websites = m_filters.listWebsites();
-        foreach(QString w, websites)
-        {
-            this->ui->website_combo_box->addItem(w);
-            this->ui->e_website_combo_box->addItem(w);
-            this->ui->domain_combo_box->addItem(w);
-        }
-
-        QList<QString> categories = m_filters.listCategories();
-        foreach(QString c, categories)
-        {
-            this->ui->category_combo_box->addItem(c);
-            this->ui->e_category_combo_box->addItem(c);
-            this->ui->w_category_combo_box->addItem(c);
-        }
     }
     else
     {
+        //showing the employee window
         this->hide();
         employee_window emp_win = employee_window(m_employee,this);
         emp_win.exec();
@@ -277,12 +329,22 @@ void MainWin::on_website_button_clicked()
 {
     ui->ui_stack->setCurrentIndex(2);
     ui->ui_title->setText("<h1>Website</h1>");
+
+    w_model =new QSqlTableModel(this);
+    w_model->setQuery("SELECT * FROM website");
+    w_model->setHeaderData(0, Qt::Horizontal, tr("site_name"));
+    w_model->setHeaderData(1, Qt::Horizontal, tr("category"));
+
+    ui->website_table_view->setModel(w_model);
+    ui->website_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->website_table_view->show();
 }
 
 void MainWin::on_setting_button_clicked()
 {
     ui->ui_stack->setCurrentIndex(3);
     ui->ui_title->setText("<h1>Setting</h1>");
+    on_user_button_clicked();
 }
 
 //plot stack functions
@@ -298,9 +360,8 @@ void MainWin::on_bar_chart_button_clicked()
     b_model->setHeaderData(3, Qt::Horizontal, tr("date"));
 
     ui->bar_chart_table_view->setModel(b_model);
+    ui->bar_chart_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->bar_chart_table_view->show();
-
-
 }
 
 void MainWin::on_line_chart_button_clicked()
@@ -313,26 +374,9 @@ void MainWin::on_pie_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(2);
 
-    p_model =new QSqlTableModel(this);
-    p_model->setQuery("SELECT * FROM category");
-    p_model->setHeaderData(0, Qt::Horizontal, tr("category"));
-    p_model->setHeaderData(1, Qt::Horizontal, tr("count"));
 
-    ui->pie_chart_table_view->setModel(p_model);
-    ui->pie_chart_table_view->show();
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 //setting stack functions
@@ -348,6 +392,8 @@ void MainWin::on_user_button_clicked()
     model1->setHeaderData(3, Qt::Horizontal, tr("isAdmin"));
     model1->setHeaderData(4, Qt::Horizontal, tr("isSupervisor"));
     ui->user_table_view->setModel(model1);
+    ui->user_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->user_table_view->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->user_table_view->show();
 
     model2 =new QSqlTableModel(this);
@@ -359,6 +405,14 @@ void MainWin::on_user_button_clicked()
 void MainWin::on_category_button_clicked()
 {
     ui->setting_stack->setCurrentIndex(1);
+    c_model =new QSqlTableModel(this);
+    c_model->setQuery("SELECT * FROM category");
+    c_model->setHeaderData(0, Qt::Horizontal, tr("category"));
+    c_model->setHeaderData(1, Qt::Horizontal, tr("description"));
+
+    ui->category_table_view->setModel(c_model);
+    ui->category_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->category_table_view->show();
 }
 
 //edit user functions
@@ -400,6 +454,7 @@ void MainWin::on_user_save_button_clicked()
     }else{
         QMessageBox::information(this,"Save","Cannnot save to database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -440,6 +495,7 @@ void MainWin::on_user_update_button_clicked()
     }else{
         QMessageBox::information(this,"Update","Cannnot update database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -460,6 +516,7 @@ void MainWin::on_user_remove_button_clicked()
     }else{
         QMessageBox::information(this,"Remove","Cannnot remove item in database.");
     }
+    on_user_button_clicked();
 }
 
 
@@ -538,6 +595,104 @@ void MainWin::on_browse_button_clicked()
 
 void MainWin::on_OK_button_clicked()
 {
+    int ret = DatabaseHandler::getInstance()->exportData(ui->file_name_line_edit->text(),m_employee.Username());
+    if(ret == 1)
+    {
+        ui->file_name_line_edit->setText("There was an issue with file.");
+    }
 
+}
+
+
+void MainWin::on_w_save_button_clicked()
+{
+    QString site_name,category;
+    site_name=ui->domain_combo_box->currentText();
+    category=ui->w_category_combo_box->currentText();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO website (site_name,category)" "VALUES (?, ?)");
+    query.addBindValue(site_name);
+    query.addBindValue(category);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Website","New website saved.");
+        }else{
+            QMessageBox::information(this,"Website","No website founded.");
+        }
+
+    }else{
+        QMessageBox::information(this,"Website","Cannnot save to database.");
+    }
+    on_website_button_clicked();
+
+}
+
+
+void MainWin::on_w_remove_button_clicked()
+{
+    QString site_name;
+    site_name=ui->domain_combo_box->currentText();
+    QSqlQuery query;
+    query.prepare("DELETE FROM website WHERE site_name = ?");
+    query.addBindValue(site_name);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Website","Website removed.");
+        }else{
+            QMessageBox::information(this,"Website","No website founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Website","Cannnot remove item in database.");
+    }
+    on_website_button_clicked();
+}
+
+
+void MainWin::on_c_add_new_button_clicked()
+{
+    QString category,description;
+    category=ui->categoty_line_edit->text();
+    description=ui->description_line_edit->text();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO category (category,description)" "VALUES (?, ?)");
+    query.addBindValue(category);
+    query.addBindValue(description);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Category","New category saved.");
+        }else{
+            QMessageBox::information(this,"Category","No category founded.");
+        }
+
+    }else{
+        QMessageBox::information(this,"Category","Cannnot save to database.");
+    }
+    on_category_button_clicked();
+}
+
+
+void MainWin::on_c_remove_button_clicked()
+{
+    QString category;
+    category=ui->domain_combo_box->currentText();
+    QSqlQuery query;
+    query.prepare("DELETE FROM category WHERE category = ?");
+    query.addBindValue(category);
+
+    if(query.exec()){
+        if(query.numRowsAffected()>0){
+            QMessageBox::information(this,"Category","Category removed.");
+        }else{
+            QMessageBox::information(this,"Category","No category founded.");
+        }
+    }else{
+        QMessageBox::information(this,"Category","Cannnot remove item in database.");
+    }
+    on_category_button_clicked();
 }
 
