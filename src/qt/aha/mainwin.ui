@@ -2032,7 +2032,7 @@ border-radius:opx;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QFrame" name="pie_frame_2">
+                      <widget class="QFrame" name="e_pie_frame">
                        <layout class="QHBoxLayout" name="horizontalLayout_34"/>
                       </widget>
                      </item>
