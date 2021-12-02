@@ -19,8 +19,13 @@ public:
 
     QList<Record> filteredRecords();
 
-    QList<QString> listWebsites();
-    QList<QString> listCategories();
+    QList<QString> listWebsites(bool filtered);
+    QList<QString> listCategories(bool filtered);
+    QList<QString> listUsers(bool filtered);
+
+    int totalTimeFor(QDate* date, QString employee, QString category, QString website);
+    QDate firstDateOfRecords();
+    QDate lastDateOfRecords();
 
 private:
     QList<Record> m_allRecords;

@@ -1464,7 +1464,7 @@ border-radius:opx;
                  <item>
                   <widget class="QStackedWidget" name="plot_stack">
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>2</number>
                    </property>
                    <widget class="QWidget" name="bar_page">
                     <layout class="QHBoxLayout" name="horizontalLayout_25">
@@ -1506,7 +1506,20 @@ border-radius:opx;
                      </item>
                      <item>
                       <widget class="QFrame" name="pie_frame">
-                       <layout class="QHBoxLayout" name="horizontalLayout_29"/>
+                       <layout class="QHBoxLayout" name="horizontalLayout_29">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                       </layout>
                       </widget>
                      </item>
                     </layout>
@@ -4221,7 +4234,7 @@ border-radius:opx;
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -6,7 +6,7 @@
 class Record
 {
 public:
-    Record(QDate date, int seconds, QString domain, QString domainCategory);
+    Record(QDate date, int seconds, QString domain, QString domainCategory, QString username);
     Record(Record * orig);
     QDate Date();
     QString Domain();

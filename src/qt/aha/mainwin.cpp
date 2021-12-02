@@ -35,6 +35,7 @@ MainWin::MainWin(QWidget *parent)
         //feeding infomation into comboboxes
         m_records = m_dbh->getAllRecords(m_supervisor.m_employees);
         m_filters = Filters(m_records);
+        m_graph = new Graph(this);
 
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
@@ -43,7 +44,7 @@ MainWin::MainWin(QWidget *parent)
             this->ui->e_employee_combo_box->addItem(e.Name());
         }
 
-        QList<QString> websites = m_filters.listWebsites();
+        QList<QString> websites = m_filters.listWebsites(false);
         foreach(QString w, websites)
         {
             this->ui->website_combo_box->addItem(w);
@@ -51,7 +52,7 @@ MainWin::MainWin(QWidget *parent)
             this->ui->domain_combo_box->addItem(w);
         }
 
-        QList<QString> categories = m_filters.listCategories();
+        QList<QString> categories = m_filters.listCategories(false);
         foreach(QString c, categories)
         {
             this->ui->category_combo_box->addItem(c);
@@ -60,78 +61,35 @@ MainWin::MainWin(QWidget *parent)
         }
 
         //barchart
-        QBarSet *set0 = new QBarSet("Bob");
-        QBarSet *set1 = new QBarSet("Tom");
-        QBarSet *set2 = new QBarSet("John");
-        QBarSet *set3 = new QBarSet("Doe");
-        QBarSet *set4 = new QBarSet("Ahmad");
-
-        *set0 << 1 << 2 << 3 << 4 << 5 << 6;
-        *set1 << 5 << 0 << 0 << 4 << 0 << 7;
-        *set2 << 3 << 5 << 8 << 13 << 8 << 5;
-        *set3 << 5 << 6 << 7 << 3 << 4 << 5;
-        *set4 << 9 << 7 << 5 << 3 << 1 << 2;
-
-        QBarSeries *series= new QBarSeries();
-        series->append(set0);
-        series->append(set1);
-        series->append(set2);
-        series->append(set3);
-        series->append(set4);
-
-        QChart *chart=new QChart();
-        chart->addSeries(series);
-        chart->setTitle("Bar Chart");
-        chart->setAnimationOptions(QChart::SeriesAnimations);
-
-        QStringList type;
-        type << "Jan" << "Feb" << "Mar" << "Apr"<<"May"<< "Jun";
-        QBarCategoryAxis *axisX = new QBarCategoryAxis();
-        axisX->append(type);
-        chart->addAxis(axisX, Qt::AlignBottom);
-        series->attachAxis(axisX);
-
-        QValueAxis *axisY = new QValueAxis();
-        axisY->setRange(0,15);
-        chart->addAxis(axisY, Qt::AlignLeft);
-        series->attachAxis(axisY);
-
-        chart->legend()->setVisible(true);
-        chart->legend()->setAlignment(Qt::AlignBottom);
-
-        QChartView *chartView=new QChartView(chart);
-        chartView->setRenderHint(QPainter::Antialiasing);
-        chartView->setParent(ui->bar_frame);
+        b_chart = m_graph->barChart(m_filters);
+        b_chartView = new QChartView(b_chart);
+        b_chartView->setRenderHint(QPainter::Antialiasing);
+        b_chartView->setParent(ui->bar_frame);
         //chartView->setParent(ui->e_bar_table_view);
 
         //pie chart
-        int num=0;
-        p_series = new QPieSeries(this);
-        foreach(Record r, m_records)
-        {
-            p_series->append(r.User(),r.Seconds());
-            QPieSlice *slice = p_series->slices().at(num);
-            //slice->setLabelVisible(true);
-            num++;
-        }
-
-        p_chart = new QChart();
-        p_chart->addSeries(p_series);
-        p_chart->setAnimationOptions(QChart::AllAnimations);
-        p_chart->setTitle("Piechart placeholder");
-        p_chart->legend()->setAlignment(Qt::AlignBottom);
-
+        p_chart = m_graph->pieChart(m_filters);
         p_chartView = new QChartView(p_chart);
         p_chartView->setRenderHint(QPainter::Antialiasing);
+        p_chart->layout()->setContentsMargins(0,0,0,0);
         p_chartView->setParent(ui->pie_frame);
+
 
         //line chart
         QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
+        //QVector<double> dataX;
+        //QVector<double> dataY;
+        QDate start = m_filters.firstDateOfRecords();
+        QDate end = m_filters.lastDateOfRecords();
+        int numDays = start.daysTo(end);
+
+
+
         ui->line_chart->addGraph();
         ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
         ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
-        ui->line_chart->xAxis->setLabel("X");
-        ui->line_chart->yAxis->setLabel("Y");
+        ui->line_chart->xAxis->setLabel("Day");
+        ui->line_chart->yAxis->setLabel("Time (Seconds)");
         ui->line_chart->xAxis->setRange(0,1000);
         ui->line_chart->yAxis->setRange(0,1000);
         ui->line_chart->setInteractions(QCP::iRangeDrag|QCP::iRangeZoom|QCP::iSelectPlottables);
@@ -153,6 +111,8 @@ MainWin::MainWin(QWidget *parent)
         ui->line_chart_2->replot();
         ui->line_chart_2->update();
 
+        QBarCategoryAxis *axisX = new QBarCategoryAxis();
+        QValueAxis *axisY = new QValueAxis();
         //percentbarchart
         QBarSet *eb_set0 = new QBarSet("Jane");
         QBarSet *eb_set1 = new QBarSet("John");
@@ -185,7 +145,7 @@ MainWin::MainWin(QWidget *parent)
         eb_chart->addAxis(eb_axisX, Qt::AlignBottom);
         eb_series->attachAxis(eb_axisX);
         QValueAxis *eb_axisY = new QValueAxis();
-        chart->addAxis(eb_axisY, Qt::AlignLeft);
+        b_chart->addAxis(eb_axisY, Qt::AlignLeft);
         eb_series->attachAxis(eb_axisY);
 
         eb_chart->legend()->setVisible(true);
@@ -218,15 +178,16 @@ MainWin::MainWin(QWidget *parent)
     else
     {
         //showing the employee window
-        this->hide();
         employee_window emp_win = employee_window(m_employee,this);
         emp_win.exec();
+        this->close();
     }
 }
 
 MainWin::~MainWin()
 {
     delete ui;
+     delete m_graph;
 }
 
 void MainWin::handleLogin(QString user)
