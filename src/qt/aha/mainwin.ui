@@ -2523,7 +2523,7 @@ border-radius:opx;
                                 <property name="spacing">
                                  <number>0</number>
                                 </property>
-                                <item alignment="Qt::AlignTop">
+                                <item>
                                  <widget class="QLabel" name="domain_label">
                                   <property name="sizePolicy">
                                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -2537,14 +2537,7 @@ border-radius:opx;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QComboBox" name="domain_combo_box">
-                                  <property name="minimumSize">
-                                   <size>
-                                    <width>0</width>
-                                    <height>30</height>
-                                   </size>
-                                  </property>
-                                 </widget>
+                                 <widget class="QLineEdit" name="domain_line_edit"/>
                                 </item>
                                </layout>
                               </item>
@@ -2583,14 +2576,7 @@ border-radius:opx;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QComboBox" name="w_category_combo_box">
-                                  <property name="minimumSize">
-                                   <size>
-                                    <width>0</width>
-                                    <height>30</height>
-                                   </size>
-                                  </property>
-                                 </widget>
+                                 <widget class="QLineEdit" name="w_category_line_edit"/>
                                 </item>
                                </layout>
                               </item>
@@ -2635,6 +2621,9 @@ border-radius:opx;
                                  </item>
                                  <item>
                                   <widget class="QPushButton" name="w_remove_button">
+                                   <property name="enabled">
+                                    <bool>false</bool>
+                                   </property>
                                    <property name="text">
                                     <string>Remove</string>
                                    </property>
@@ -4208,6 +4197,9 @@ border-radius:opx;
                  </item>
                  <item>
                   <widget class="QPushButton" name="category_button">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="text">
                     <string>Category</string>
                    </property>

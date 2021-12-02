@@ -16,6 +16,13 @@ public:
 
     void setStartDate(QDate date);
     void setEndDate(QDate date);
+    void setCategories(QList<QString> cats);
+    void setWebsites(QList<QString> webs);
+    void setEmployees(QList<QString> emps);
+
+    void clearCategories();
+    void clearWebsites();
+    void clearEmployees();
 
     QList<Record> filteredRecords();
 

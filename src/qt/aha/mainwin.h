@@ -20,14 +20,13 @@
 
 #include <QtCharts>
 #include <QChartView>
-#include <QBarSet>
-#include <QBarSeries>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtCharts/QChartView>
 #include <QtCharts/QPieSeries>
 #include <QtCharts/QPieSlice>
+
 
 #include "supervisor.h"
 #include "employee.h"
@@ -92,7 +91,7 @@ private slots:
 
     void on_employee_combo_box_currentTextChanged(const QString &arg1);
 
-    void on_category_combo_box_currentTextChanged(const QString &arg1);
+    void on_category_combo_box_currentTextChanged(QString cat);
 
     void on_e_bar_chart_button_clicked();
 
@@ -131,8 +130,6 @@ private:
     QList<Record> m_graphData;
     Filters m_filters;
 
-    QSqlQueryModel *b_model;
-    QSqlQueryModel *w_model;
     QSqlQueryModel *c_model;
 
     Graph * m_graph;
