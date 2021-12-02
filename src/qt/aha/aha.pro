@@ -13,6 +13,7 @@ CONFIG += c++11
 SOURCES += \
     employee.cpp \
     employee_window.cpp \
+    graph.cpp \
     qcustomplot.cpp \
     databasehandler.cpp \
     filters.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     employee_window.h \
+    graph.h \
     qcustomplot.h \
     databasehandler.h \
     employee.h \

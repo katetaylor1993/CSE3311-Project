@@ -86,7 +86,7 @@ QList<Record> DatabaseHandler::getAllRecords(QList<Employee> employees)
         QList<QString> data = fetch("website","report","username",e.Username());
         foreach(QString d, data)
         {
-            qDebug() << d;
+            //qDebug() << d;
         }
         QString website, time, date, category;
         QSqlQuery wq = QSqlQuery("SELECT website, time, date FROM report WHERE username='"+e.Username()+"'",m_db);
@@ -97,8 +97,8 @@ QList<Record> DatabaseHandler::getAllRecords(QList<Employee> employees)
             time = wq.value(1).toString();
             date = wq.value(2).toString();
             category = getCategory(website);
-            qDebug() << website+", "+time+", "+date+", "+category;
-            Record r = Record(QDate::fromString(date,"yyyy-mm-dd"),time.toInt(),website,category);
+            //qDebug() << website+", "+time+", "+date+", "+category;
+            Record r = Record(QDate::fromString(date,"yyyy-MM-dd"),time.toInt(),website,category,e.Name());
             ret.append(r);
         }
 

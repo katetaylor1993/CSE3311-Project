@@ -33,6 +33,7 @@
 #include "employee.h"
 #include "databasehandler.h"
 #include "filters.h"
+#include "graph.h"
 
 
 
@@ -134,9 +135,13 @@ private:
     QSqlQueryModel *w_model;
     QSqlQueryModel *c_model;
 
-    QPieSeries *p_series;
+    Graph * m_graph;
+
     QChart *p_chart;
     QChartView *p_chartView;
+
+    QChart *b_chart;
+    QChartView *b_chartView;
 
     //TODO: Change this to be class with more information about the user
     int m_currentUser;
