@@ -39,6 +39,9 @@ public:
     void updateCategory(QString url, QString cat);
     QString getCategory(QString website);
     int exportData(QString filename, QString employeeName);
+    void setCategory(QString website, QString category);
+
+    QMap<QString, QString> m_catMap;
 
 
 public slots:
@@ -55,7 +58,7 @@ private:
     int m_port;
     QSqlDatabase m_db;
     QFile * m_categories;
-    QMap<QString, QString> m_catMap;
+
 
     void fillCategories();
 

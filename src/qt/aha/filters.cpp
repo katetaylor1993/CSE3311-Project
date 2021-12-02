@@ -134,6 +134,63 @@ QList<Record> Filters::filteredRecords()
 
 void Filters::setStartDate(QDate date) {m_startDate = date;}
 void Filters::setEndDate(QDate date) {m_endDate = date;}
+void Filters::setCategories(QList<QString> cats) {
+    m_categories.clear();
+    foreach(QString c,cats)
+    {
+        m_categories.append(c);
+    }
+}
+void Filters::setWebsites(QList<QString> webs) {
+    m_websites.clear();
+    foreach(QString w,webs)
+    {
+        m_websites.append(w);
+    }
+}
+void Filters::setEmployees(QList<QString> emps) {
+    m_employees.clear();
+    foreach(QString e,emps)
+    {
+        m_employees.append(e);
+    }
+}
+
+void Filters::clearCategories()
+{
+    m_categories = QList<QString>();
+    foreach(Record r, m_allRecords)
+    {
+        if(!m_categories.contains(r.Category()))
+        {
+            m_categories.append(r.Category());
+        }
+    }
+}
+
+void Filters::clearWebsites()
+{
+    m_websites = QList<QString>();
+    foreach(Record r, m_allRecords)
+    {
+        if(!m_websites.contains(r.Domain()))
+        {
+            m_websites.append(r.Domain());
+        }
+    }
+}
+
+void Filters::clearEmployees()
+{
+    m_employees = QList<QString>();
+    foreach(Record r, m_allRecords)
+    {
+        if(!m_employees.contains(r.User()))
+        {
+            m_employees.append(r.User());
+        }
+    }
+}
 
 int Filters::totalTimeFor(QDate* date, QString employee, QString category, QString website)
 {
@@ -150,7 +207,7 @@ int Filters::totalTimeFor(QDate* date, QString employee, QString category, QStri
             addThis = false;
         if((category!=nullptr) && (r.Category()!=category))
             addThis = false;
-        if((website!=nullptr) && (r.Category()!=category))
+        if((website!=nullptr) && (r.Domain()!=website))
             addThis=false;
 
         if(addThis)

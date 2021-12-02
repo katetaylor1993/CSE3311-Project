@@ -19,16 +19,21 @@ Graph::~Graph()
 
 QChart * Graph::pieChart(Filters filters)
 {
-    int num=0;
     QPieSeries * p_series = new QPieSeries(graphParent);
-    foreach(Record r, filters.filteredRecords())
+
+    foreach(QString e, filters.listUsers(true))
     {
-        //qDebug() << r.User();
-        p_series->append(r.User(),r.Seconds());
-        QString webName = r.Domain().split('.').at(1);
-        p_series->slices().at(num)->setLabel(r.User()+", "+webName);
-        p_series->slices().at(num)->setLabelVisible(true);
-        num++;
+        foreach(QString w, filters.listWebsites(true))
+        {
+            int time = filters.totalTimeFor(nullptr,e,nullptr,w);
+            if(time == 0)
+                continue;
+            QPieSlice *slice = new QPieSlice();
+            slice->setLabel(e+", "+w.split('.').at(1));
+            slice->setValue(time);
+            slice->setLabelVisible(true);
+            p_series->append(slice);
+        }
     }
 
     QChart * p_chart = new QChart();

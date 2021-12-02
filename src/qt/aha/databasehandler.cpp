@@ -174,6 +174,26 @@ QString DatabaseHandler::getCategory(QString website)
     }
 }
 
+void DatabaseHandler::setCategory(QString website, QString category)
+{
+    m_catMap.insert(website,category);
+
+    m_categories->remove();
+    m_categories = new QFile("../URL-categorization-DFE.csv",this);
+    if(m_categories->open(QIODevice::WriteOnly))
+    {
+        QTextStream out = QTextStream(m_categories);
+        out << "url,main_category" << Qt::endl;
+        QMap<QString, QString>::iterator i;
+        for(i=m_catMap.begin(); i!=m_catMap.end(); ++i)
+        {
+
+            out << i.key() << "," << i.value() << Qt::endl;
+        }
+        m_categories->close();
+    }
+}
+
 int DatabaseHandler::exportData(QString filename, QString employeeName)
 {
     if(!filename.contains(".csv"))

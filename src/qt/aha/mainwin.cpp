@@ -39,26 +39,34 @@ MainWin::MainWin(QWidget *parent)
 
         connect(ui->m_button, &QPushButton::clicked, this, &MainWin::on_m_button_clicked);
 
+        QString all = QString("Select All");
+        this->ui->e_employee_combo_box->addItem(all);
         foreach(Employee e, m_supervisor.m_employees)
         {
             this->ui->e_employee_combo_box->addItem(e.Name());
         }
+        this->ui->e_employee_combo_box->setCurrentIndex(this->ui->e_employee_combo_box->findData(all));
 
+        this->ui->website_combo_box->addItem(all);
         QList<QString> websites = m_filters.listWebsites(false);
         foreach(QString w, websites)
         {
             this->ui->website_combo_box->addItem(w);
             this->ui->e_website_combo_box->addItem(w);
-            this->ui->domain_combo_box->addItem(w);
+            //this->ui->domain_combo_box->addItem(w);
         }
+        this->ui->website_combo_box->setCurrentIndex(this->ui->website_combo_box->findData(all));
 
+        this->ui->category_combo_box->addItem(all);
         QList<QString> categories = m_filters.listCategories(false);
         foreach(QString c, categories)
         {
             this->ui->category_combo_box->addItem(c);
             this->ui->e_category_combo_box->addItem(c);
-            this->ui->w_category_combo_box->addItem(c);
+            //this->ui->w_category_combo_box->addItem(c);
         }
+        this->ui->category_combo_box->setCurrentIndex(this->ui->category_combo_box->findData(all));
+
 
         //barchart
         b_chart = m_graph->barChart(m_filters);
@@ -74,6 +82,48 @@ MainWin::MainWin(QWidget *parent)
         p_chart->layout()->setContentsMargins(0,0,0,0);
         p_chartView->setParent(ui->pie_frame);
 
+        //table on workforce > bar chart page
+        QStandardItemModel *model = new QStandardItemModel();
+        QStringList hHeader;
+        hHeader.append("Employee Name");
+        hHeader.append("Website Category");
+        hHeader.append("Website");
+        hHeader.append("Time (Seconds)");
+        hHeader.append("Date");
+        model->setHorizontalHeaderLabels(hHeader);
+        foreach(Record r, m_filters.filteredRecords())
+        {
+            QList<QStandardItem*> row;
+            row << new QStandardItem(r.User())
+                << new QStandardItem(r.Category())
+                << new QStandardItem(r.Domain())
+                << new QStandardItem(QString::number(r.Seconds()))
+                << new QStandardItem(r.Date().toString());
+            model->appendRow(row);
+        }
+        ui->bar_chart_table_view->setModel(model);
+        ui->bar_chart_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+        //table on pie chart page
+        QStandardItemModel *model2 = new QStandardItemModel();
+        QStringList hHeader2;
+        hHeader2.append("Employee");
+        hHeader2.append("Website");
+        hHeader2.append("Time (Seconds)");
+        model2->setHorizontalHeaderLabels(hHeader2);
+        foreach(QString e, m_filters.listUsers(true))
+        {
+            foreach(QString w, m_filters.listWebsites(true))
+            {
+                QList<QStandardItem*> row;
+                row << new QStandardItem(e)
+                    << new QStandardItem(w)
+                    << new QStandardItem(QString::number(m_filters.totalTimeFor(nullptr,e,nullptr,w)));
+                model2->appendRow(row);
+            }
+        }
+        ui->pie_chart_table_view->setModel(model2);
+        ui->pie_chart_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
         //line chart
         QVector <double> dataX={1,2,3,4,5},dataY={0,9,18,5,30};
@@ -82,9 +132,6 @@ MainWin::MainWin(QWidget *parent)
         QDate start = m_filters.firstDateOfRecords();
         QDate end = m_filters.lastDateOfRecords();
         int numDays = start.daysTo(end);
-
-
-
         ui->line_chart->addGraph();
         ui->line_chart->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
         ui->line_chart->graph(0)->setLineStyle(QCPGraph::lsLine);
@@ -174,6 +221,8 @@ MainWin::MainWin(QWidget *parent)
         dc_chartView->chart()->legend()->setAlignment(Qt::AlignBottom);
         dc_chartView->setParent(ui->e_pie_frame);
 
+        //connect(this->ui->category_combo_box,SIGNAL(currentTextChanged(QString)),this,SLOT(on_category_combo_box_currentTextChanged(Qstring)));
+        connect(this->ui->database_button,SIGNAL(clicked()),this,SLOT(on_database_button_clicked()));
     }
     else
     {
@@ -207,8 +256,82 @@ void MainWin::handleLogin(QString user)
 
 void MainWin::on_database_button_clicked()
 {
+    QString cat = this->ui->category_combo_box->currentText();
+    QString web = this->ui->website_combo_box->currentText();
+    qDebug() << "On DB Clicked: "+cat+", "+web;
+    QList<QString> cfilt;
+    QList<QString> wfilt;
+    if(cat != "Select All" && cat != "")
+    {
+        cfilt.append(cat);
+        m_filters.setCategories(cfilt);
+    }
+    else
+        m_filters.clearCategories();
+
+    if(web != "Select All" && cat != "")
+    {
+        wfilt.append(web);
+        m_filters.setWebsites(wfilt);
+    }
+    else
+        m_filters.clearWebsites();
+
+    //barchart
+    b_chart = m_graph->barChart(m_filters);
+    b_chartView->setChart(m_graph->barChart(m_filters));
+
+    //pie chart
+    p_chart = m_graph->pieChart(m_filters);
+    p_chartView->setChart(m_graph->pieChart(m_filters));
 
 
+    QStandardItemModel *model = new QStandardItemModel();
+    QStringList hHeader;
+    hHeader.append("Employee Name");
+    hHeader.append("Website Category");
+    hHeader.append("Website");
+    hHeader.append("Time (Seconds)");
+    hHeader.append("Date");
+    model->setHorizontalHeaderLabels(hHeader);
+    foreach(Record r, m_filters.filteredRecords())
+    {
+        QList<QStandardItem*> row;
+        row << new QStandardItem(r.User())
+            << new QStandardItem(r.Category())
+            << new QStandardItem(r.Domain())
+            << new QStandardItem(QString::number(r.Seconds()))
+            << new QStandardItem(r.Date().toString());
+        model->appendRow(row);
+    }
+    ui->bar_chart_table_view->setModel(model);
+
+    //table on pie chart page
+    QStandardItemModel *model2 = new QStandardItemModel();
+    QStringList hHeader2;
+    hHeader2.append("Employee");
+    hHeader2.append("Website");
+    hHeader2.append("Time (Seconds)");
+    model2->setHorizontalHeaderLabels(hHeader2);
+    foreach(QString e, m_filters.listUsers(true))
+    {
+        foreach(QString w, m_filters.listWebsites(true))
+        {
+            QList<QStandardItem*> row;
+            row << new QStandardItem(e)
+                << new QStandardItem(w)
+                << new QStandardItem(QString::number(m_filters.totalTimeFor(nullptr,e,nullptr,w)));
+            model2->appendRow(row);
+        }
+    }
+    ui->pie_chart_table_view->setModel(model2);
+
+    if(ui->bar_chart_table_view->isVisible())
+        ui->bar_chart_table_view->repaint();
+    if(ui->pie_chart_table_view->isVisible())
+        ui->pie_chart_table_view->repaint();
+    b_chartView->repaint();
+    p_chartView->repaint();
 }
 
 //menu animation
@@ -291,12 +414,19 @@ void MainWin::on_website_button_clicked()
     ui->ui_stack->setCurrentIndex(2);
     ui->ui_title->setText("<h1>Website</h1>");
 
-    w_model =new QSqlTableModel(this);
-    w_model->setQuery("SELECT * FROM website");
-    w_model->setHeaderData(0, Qt::Horizontal, tr("site_name"));
-    w_model->setHeaderData(1, Qt::Horizontal, tr("category"));
-
-    ui->website_table_view->setModel(w_model);
+    QStandardItemModel *model = new QStandardItemModel();
+    QStringList hHeader;
+    hHeader.append("Website");
+    hHeader.append("Category");
+    QMap<QString, QString>::iterator i;
+    for(i=m_dbh->m_catMap.begin(); i!=m_dbh->m_catMap.end(); ++i)
+    {
+        QList<QStandardItem*> row;
+        row << new QStandardItem(i.key())
+            << new QStandardItem(i.value());
+        model->appendRow(row);
+    }
+    ui->website_table_view->setModel(model);
     ui->website_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->website_table_view->show();
 }
@@ -312,16 +442,6 @@ void MainWin::on_setting_button_clicked()
 void MainWin::on_bar_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(0);
-
-    b_model =new QSqlTableModel(this);
-    b_model->setQuery("SELECT * FROM report");
-    b_model->setHeaderData(0, Qt::Horizontal, tr("username"));
-    b_model->setHeaderData(1, Qt::Horizontal, tr("website"));
-    b_model->setHeaderData(2, Qt::Horizontal, tr("time"));
-    b_model->setHeaderData(3, Qt::Horizontal, tr("date"));
-
-    ui->bar_chart_table_view->setModel(b_model);
-    ui->bar_chart_table_view->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->bar_chart_table_view->show();
 }
 
@@ -334,9 +454,6 @@ void MainWin::on_line_chart_button_clicked()
 void MainWin::on_pie_chart_button_clicked()
 {
     ui->plot_stack->setCurrentIndex(2);
-
-
-
 }
 
 
@@ -517,7 +634,7 @@ void MainWin::on_employee_combo_box_currentTextChanged(const QString &arg1)
 }
 
 
-void MainWin::on_category_combo_box_currentTextChanged(const QString &arg1)
+void MainWin::on_category_combo_box_currentTextChanged(QString cat)
 {
 
 }
@@ -568,9 +685,12 @@ void MainWin::on_OK_button_clicked()
 void MainWin::on_w_save_button_clicked()
 {
     QString site_name,category;
-    site_name=ui->domain_combo_box->currentText();
-    category=ui->w_category_combo_box->currentText();
+    site_name=ui->domain_line_edit->text();
+    category=ui->w_category_line_edit->text();
 
+    m_dbh->setCategory(site_name, category);
+
+    /*
     QSqlQuery query;
     query.prepare("INSERT INTO website (site_name,category)" "VALUES (?, ?)");
     query.addBindValue(site_name);
@@ -587,6 +707,7 @@ void MainWin::on_w_save_button_clicked()
         QMessageBox::information(this,"Website","Cannnot save to database.");
     }
     on_website_button_clicked();
+    */
 
 }
 
@@ -594,7 +715,7 @@ void MainWin::on_w_save_button_clicked()
 void MainWin::on_w_remove_button_clicked()
 {
     QString site_name;
-    site_name=ui->domain_combo_box->currentText();
+    site_name=ui->domain_line_edit->text();
     QSqlQuery query;
     query.prepare("DELETE FROM website WHERE site_name = ?");
     query.addBindValue(site_name);
@@ -640,7 +761,7 @@ void MainWin::on_c_add_new_button_clicked()
 void MainWin::on_c_remove_button_clicked()
 {
     QString category;
-    category=ui->domain_combo_box->currentText();
+    category=ui->domain_line_edit->text();
     QSqlQuery query;
     query.prepare("DELETE FROM category WHERE category = ?");
     query.addBindValue(category);
